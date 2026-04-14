@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LSPD Recruitment and Employment Division Portal</title>
+    <style>
+        :root {
+            --lspd-navy: #1a2a3a;
+            --lspd-blue: #2980b9;
+            --success-green: #27ae60;
+            --bg-gray: #f0f2f5;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-gray); margin: 0; padding: 0; }
+        
+        /* Header & Nav */
+        .header { background: var(--lspd-navy); color: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--lspd-blue); }
+        .nav-tabs { display: flex; justify-content: center; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .tab-btn { padding: 15px 30px; border: none; background: none; cursor: pointer; font-weight: bold; color: #666; transition: 0.3s; border-bottom: 3px solid transparent; }
+        .tab-btn:hover { color: var(--lspd-blue); background: #f8f9fa; }
+        .tab-btn.active { color: var(--lspd-blue); border-bottom: 3px solid var(--lspd-blue); }
+
+        .container { max-width: 1000px; margin: 20px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        
+        /* Staff Info Section */
+        .staff-info { background: #eef2f7; border: 1px solid #d1d9e6; padding: 15px; border-radius: 8px; margin-bottom: 25px; display: flex; gap: 20px; align-items: center; }
+        .staff-info h3 { margin: 0; font-size: 0.9em; color: var(--lspd-navy); flex-shrink: 0; }
+
+        .form-section { display: none; }
+        .form-section.active { display: block; }
+
+        /* Typography & Forms */
+        h2 { color: var(--lspd-navy); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        .section-title { font-weight: bold; color: var(--lspd-blue); margin: 25px 0 15px; text-transform: uppercase; font-size: 0.85em; letter-spacing: 1px; }
+        
+        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; }
+        label { font-weight: bold; margin-bottom: 6px; font-size: 0.9em; color: #444; }
+        input, select, textarea { padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; transition: border 0.3s; }
+        input:focus { border-color: var(--lspd-blue); outline: none; }
+        
+        .row { display: flex; gap: 20px; margin-bottom: 10px; }
+        .row .form-group { flex: 1; }
+
+        /* Item Cards */
+        .item-card { background: #f8f9fa; border: 1px solid #e9ecef; padding: 20px; border-radius: 8px; margin-bottom: 15px; position: relative; }
+        .item-card h4 { margin: 0 0 15px 0; color: var(--lspd-navy); font-size: 1.1em; }
+
+        /* Buttons & Output */
+        .build-btn { background-color: var(--lspd-navy); color: white; border: none; padding: 18px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 10px; transition: 0.3s; }
+        .build-btn:hover { background-color: #2c3e50; transform: translateY(-2px); }
+        
+        .output-box { margin-top: 30px; background: #2d3436; color: #fab1a0; padding: 20px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 13px; width: 100%; height: 250px; box-sizing: border-box; resize: none; }
+        .copy-btn { background-color: var(--success-green); margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>LSPD Recruitment and Employment Division Portal</h1>
+    <p>Recruitment and Employment Division | Official Generator</p>
+</div>
+
+<div class="nav-tabs">
+    <button class="tab-btn active" onclick="openTab(event, 'prelim')">PRELIMINARY</button>
+    <button class="tab-btn" onclick="openTab(event, 'latent-prints')">OTHER</button>
+    
+</div>
+
+<div class="container">
+
+    <div class="staff-info">
+        <h3>PERMANENT STAFF DETAILS:</h3>
+        <div class="form-group" style="margin:0; flex:1;">
+            <input type="text" id="global_rank" placeholder="Rank (e.g. Recruitment Officer)" oninput="saveStaff()">
+        </div>
+        <div class="form-group" style="margin:0; flex:2;">
+            <input type="text" id="global_name" placeholder="Full Name (e.g. Ruby Marks)" oninput="saveStaff()">
+        </div>
+        <div class="form-group" style="margin:0; flex:1;">
+            <input type="text" id="global_badge" placeholder="Badge # (e.g. N173508)" oninput="saveStaff()">
+        </div>
+         
+        <div style="font-size: 11px; color: #777; font-style: italic; width: 100px;">Auto-saves to browser</div>
+    </div>
+
+    <div id="ballistics" class="form-section active">
+        <h2>Ballistics Analysis Report</h2>
+        <div class="row">
+            <div class="form-group"><label>Req. #</label><input type="text" id="br_reqNum" placeholder="0026"></div>
+            <div class="form-group"><label>Date (DD/MM)</label><input type="text" id="br_date" placeholder="01/10"></div>
+        </div>
+        <div class="row">
+            <div class="form-group"><label>Requested By</label><input type="text" id="br_reqBy" placeholder="Marks, N173508"></div>
+            <div class="form-group"><label>Email</label><input type="text" id="br_email" placeholder="N173508@lspd.online"></div>
+        </div>
+        <div class="section-title">Evidence Configuration</div>
+        <div class="form-group">
+            <label>Number of Items:</label>
+            <input type="number" id="br_count" value="1" min="1" onchange="genFieldsBR()">
+        </div>
+        <div id="br_items_container"></div>
+        <button class="build-btn" onclick="buildBR()">Generate Ballistics BBCode</button>
+    </div>
+
+    <div id="latent-prints" class="form-section">
+        <h2>Latent Print Report</h2>
+        <div class="row">
+            <div class="form-group"><label>Report #</label><input type="text" id="lp_reqNum" placeholder="107"></div>
+            <div class="form-group"><label>Date (DD/MM)</label><input type="text" id="lp_date" placeholder="01/10"></div>
+        </div>
+        <div class="row">
+            <div class="form-group"><label>Requested By</label><input type="text" id="lp_reqBy" placeholder="Det. John Doe"></div>
+            <div class="form-group"><label>Email</label><input type="text" id="lp_email" placeholder="j.doe@lspd.gov"></div>
+        </div>
+        <div class="section-title">Evidence Configuration</div>
+        <div class="form-group">
+            <label>Number of Items:</label>
+            <input type="number" id="lp_count" value="1" min="1" onchange="genFieldsLP()">
+        </div>
+        <div id="lp_items_container"></div>
+        <button class="build-btn" onclick="buildLP()">Generate Latent Print BBCode</button>
+    </div>
+
+    <div id="dna" class="form-section">
+        <h2>DNA & Serology Report</h2>
+        <div class="row">
+            <div class="form-group"><label>Req. #</label><input type="text" id="dna_reqNum" placeholder="0026"></div>
+            <div class="form-group"><label>Date (DD/MM)</label><input type="text" id="dna_date" placeholder="01/10"></div>
+        </div>
+        <div class="row">
+            <div class="form-group"><label>Requested By</label><input type="text" id="dna_reqBy" placeholder="Marks, N173508"></div>
+            <div class="form-group"><label>Email</label><input type="text" id="dna_email" placeholder="N173508@lspd.online"></div>
+        </div>
+        <div class="section-title">Sample Configuration</div>
+        <div class="form-group">
+            <label>Number of DNA Samples:</label>
+            <input type="number" id="dna_count" value="1" min="1" onchange="genFieldsDNA()">
+        </div>
+        <div id="dna_items_container"></div>
+        <button class="build-btn" onclick="buildDNA()">Generate DNA BBCode</button>
+    </div>
+
+    <div id="narcotics" class="form-section">
+        <h2>Narcotics Confirmatory Analysis</h2>
+        <div class="row">
+            <div class="form-group"><label>Req. #</label><input type="text" id="nc_reqNum" placeholder="0026"></div>
+            <div class="form-group"><label>Date</label><input type="text" id="nc_drNum" placeholder="01/10"></div>
+        </div>
+        <div class="row">
+            <div class="form-group"><label>Requested By</label><input type="text" id="nc_reqBy" placeholder="Officer Name & Serial"></div>
+            <div class="form-group"><label>Email</label><input type="text" id="nc_email" placeholder="officer@lspd.online"></div>
+        </div>
+        <div class="section-title">Narcotics Evidence Configuration</div>
+        <div class="form-group">
+            <label>Number of Substances:</label>
+            <input type="number" id="nc_count" value="1" min="1" onchange="genFieldsNC()">
+        </div>
+        <div id="nc_items_container"></div>
+        <button class="build-btn" onclick="buildNC()">Generate Narcotics BBCode</button>
+    </div>
+
+    <div id="output-area" style="display:none; margin-top:40px; border-top: 2px solid #eee;">
+        <div class="section-title">Generated BBCode Output</div>
+        <textarea id="universal_output" class="output-box" readonly></textarea>
+        <button class="build-btn copy-btn" onclick="copyCode()">Copy to Clipboard</button>
+    </div>
+
+</div>
+
+<script>
+
+const drugData = {
+    "Crack Cocaine": { "formal_name": "Cocaine Base (Crack Cocaine)", "description": "The rock-like material tested positive with the Scott reagent and GC-MS confirmed [b]cocaine base[/b] (crack cocaine).", "tests": ["Scott", "GC-MS"], "descriptor_template": "Seized rock-like substance ({weight} grams, off-white rocks)" },
+    "Cocaine": { "formal_name": "Benzoylecgonine Methyl Ester (Cocaine)", "description": "Scott reagent turned blue, consistent with tropane alkaloids. GC-MS analysis confirmed [b]benzoylecgonine methyl ester[/b] (cocaine), an alkaloid derived from the coca plant.", "tests": ["Scott", "GC-MS"], "descriptor_template": "Seized white powder ({weight} grams)" },
+    "Heroin": { "formal_name": "Diamorphine (Heroin)", "description": "Marquis reagent produced a purple-brown reaction and Mecke reagent produced green coloration, both indicative of opiate alkaloids. GC-MS analysis confirmed the presence of [b]diamorphine[/b] (heroin), a semi-synthetic opioid derived from morphine.", "tests": ["Marquis", "Mecke", "GC-MS"], "descriptor_template": "Seized powdered substance ({weight} grams, brown powder)" },
+    "Methamphetamine": { "formal_name": "(S)-Methamphetamine Hydrochloride (Methamphetamine)", "description": "The crystalline substance produced an orange-brown Marquis reaction and blue Simons test, indicating a secondary amine. GC-MS confirmed the presence of [b]b-methamphetamine hydrochloride[/b] (methamphetamine).", "tests": ["Marquis", "Simon’s", "GC-MS"], "descriptor_template": "Seized crystalline material ({weight} grams, clear crystalline shards)" },
+    "Cannabis": { "formal_name": "Tetrahydrocannabinol (Cannabis)", "description": "Microscopic examination revealed glandular trichomes and cystolithic hairs consistent with cannabis plant material. Duquenois Levine test produced a purple color upon chloroform extraction. GC-MS confirmed the presence of [b]tetrahydrocannabinol (THC)[/b], the primary psychoactive compound in cannabis.", "tests": ["Microscopy", "Duquenois-Levine", "GC-MS"], "descriptor_template": "Seized organic material ({weight} grams, green leafy substance)" },
+    "Xanax": { "formal_name": "Alprazolam (Xanax)", "description": "GC-MS and FTIR confirmed the presence of [b]alprazolam[/b] (Xanax), a benzodiazepine.", "tests": ["FTIR", "GC-MS"], "descriptor_template": "Seized tablets ({weight} total, pharmaceutical grade)" },
+    "Vicodin": { "formal_name": "Hydrocodone Bitartrate (Vicodin)", "description": "FTIR and GC-MS confirmed the presence of [b]hydrocodone bitartrate[/b] (Vicodin), a semi-synthetic opioid.", "tests": ["FTIR", "GC-MS"], "descriptor_template": "Seized tablets ({weight} total, white tablets)" },
+    "Valium": { "formal_name": "Diazepam (Valium)", "description": "FTIR and GC-MS confirmed the presence of [b]diazepam[/b] (Valium), a benzodiazepine.", "tests": ["FTIR", "GC-MS"], "descriptor_template": "Seized tablets ({weight} total, blue pharmaceutical tablets)" },
+    "Morphine": { "formal_name": "Morphine Sulfate (Morphine)", "description": "Mecke reagent produced a green color shift. GC-MS confirmed [b]morphine sulfate[/b], a naturally occurring opiate analgesic.", "tests": ["Mecke", "GC-MS"], "descriptor_template": "Seized powdered substance ({weight} grams, off-white powder)" },
+    "PCP": { "formal_name": "Phencyclidine (PCP)", "description": "Mandelin reagent yielded a yellow-green reaction. GC-MS confirmed [b]phencyclidine[/b] (PCP), a dissociative hallucinogen.", "tests": ["Mandelin", "GC-MS"], "descriptor_template": "Seized crystalline substance ({weight} grams, pale yellow powder)" },
+    "Adderall": { "formal_name": "Mixed Amphetamine Salts (Adderall)", "description": "Marquis reagent produced an orange color indicative of amphetamines. GC-MS confirmed [b]mixed amphetamine salts[/b] consistent with Adderall.", "tests": ["Marquis", "GC-MS"], "descriptor_template": "Seized tablets ({weight} total, orange tablets)" },
+    "Mescaline": { "formal_name": "3,4,5-Trimethoxyphenethylamine (Mescaline)", "description": "Marquis reagent yielded a yellow-orange reaction. GC-MS confirmed [b]mescaline[/b], a naturally occurring psychedelic alkaloid.", "tests": ["Marquis", "GC-MS"], "descriptor_template": "Seized dried plant material ({weight} grams, cactus-derived)" },
+    "Bath Salts": { "formal_name": "Synthetic Cathinones (Bath Salts)", "description": "The tan powder produced a bright yellow with Liebermann reagent. GC-MS analysis detected synthetic cathinones, consistent with [b]3,4-methylenedioxypyrovalerone (MDPV)[/b] or similar compounds.", "tests": ["Liebermann", "GC-MS"], "descriptor_template": "Seized tan granular substance ({weight} grams)" },
+    "Oxycodone": { "formal_name": "Oxycodone Hydrochloride (Oxy)", "description": "FTIR and GC-MS confirmed the presence of [b]oxycodone hydrochloride[/b], a semi-synthetic opioid used for pain management.", "tests": ["FTIR", "GC-MS"], "descriptor_template": "Seized tablets ({weight} total, round white tablets)" },
+    "Ketamine": { "formal_name": "Ketamine Hydrochloride (Ketamine)", "description": "Mandelin reagent turned orange. GC-MS confirmed [b]ketamine hydrochloride[/b], a dissociative anesthetic.", "tests": ["Mandelin", "GC-MS"], "descriptor_template": "Seized crystalline substance ({weight} grams, colorless powder)" },
+    "Psilocybin Mushrooms": { "formal_name": "Psilocybin (Psilocybin Mushrooms)", "description": "Microscopic analysis confirmed the presence of psilocybin-containing fungal spores. GC-MS confirmed [b]psilocybin[/b], a naturally occurring hallucinogen derived from species such as Psilocybe cubensis.", "tests": ["Microscopy", "GC-MS"], "descriptor_template": "Seized fungal material ({weight} grams, dried mushrooms)" },
+    "MDMA": { "formal_name": "3,4-Methylenedioxymethamphetamine (MDMA)", "description": "Marquis reagent produced a dark purple reaction. GC-MS confirmed [b]3,4-methylenedioxymethamphetamine[/b] (MDMA), a substituted amphetamine commonly known as ecstasy.", "tests": ["Marquis", "GC-MS"], "descriptor_template": "Seized tablets ({weight} total, multicolored pressed pills)" },
+    "Cannabis Edibles": { "formal_name": "Tetrahydrocannabinol (THC, Cannabis Edibles)", "description": "Duquenois Levine test produced a purple coloration on extracted sample. GC-MS confirmed [b]tetrahydrocannabinol (THC)[/b] within the edible substrate.", "tests": ["Duquenois-Levine", "GC-MS"], "descriptor_template": "Seized edible items ({weight} total, cannabis-infused food products)" },
+    "Codeine": { "formal_name": "Codeine Phosphate (Codeine)", "description": "Mecke reagent produced a green coloration. GC-MS confirmed [b]codeine phosphate[/b], a mild opiate used for analgesia and cough suppression.", "tests": ["Mecke", "GC-MS"], "descriptor_template": "Seized bottled liquid ({weight} mL, cough syrup)" }
+};
+
+// PERSISTENCE LOGIC: Save name and badge to browser storage
+function saveStaff() {
+    localStorage.setItem('lspd_rank', document.getElementById('global_rank').value);
+    localStorage.setItem('lspd_name', document.getElementById('global_name').value);
+    localStorage.setItem('lspd_badge', document.getElementById('global_badge').value);
+}
+
+function loadStaff() {
+    if(localStorage.getItem('lspd_rank')) document.getElementById('global_rank').value = localStorage.getItem('lspd_rank');
+    if(localStorage.getItem('lspd_name')) document.getElementById('global_name').value = localStorage.getItem('lspd_name');
+    if(localStorage.getItem('lspd_badge')) document.getElementById('global_badge').value = localStorage.getItem('lspd_badge');
+}
+
+// TAB LOGIC
+function openTab(evt, tabName) {
+    let i, sections, tablinks;
+    sections = document.getElementsByClassName("form-section");
+    for (i = 0; i < sections.length; i++) { sections[i].classList.remove("active"); }
+    tablinks = document.getElementsByClassName("tab-btn");
+    for (i = 0; i < tablinks.length; i++) { tablinks[i].classList.remove("active"); }
+    document.getElementById(tabName).classList.add("active");
+    evt.currentTarget.classList.add("active");
+    document.getElementById("output-area").style.display = "none";
+}
+
+// FIELD GENERATORS
+function genFieldsBR() {
+    const container = document.getElementById('br_items_container');
+    const count = document.getElementById('br_count').value;
+    container.innerHTML = '';
+    for (let i = 1; i <= count; i++) {
+        container.innerHTML += `
+            <div class="item-card">
+                <h4>Ballistics Item #${i}</h4>
+                <div class="form-group"><label>Description</label><input type="text" id="br_desc_${i}" placeholder="One (1) 9mm Shell Casing"></div>
+                <div class="row">
+                    <div class="form-group"><label>Status</label><select id="br_status_${i}" onchange="toggleMatch('br', ${i})"><option value="no">No Match</option><option value="yes">Identified/Match Found</option></select></div>
+                    <div class="form-group" id="br_match_box_${i}" style="display:none;"><label>Match To:</label><input type="text" id="br_match_${i}" placeholder="Tariq Shareef / Serial: 12345"></div>
+                </div>
+            </div>`;
+    }
+}
+
+function genFieldsLP() {
+    const container = document.getElementById('lp_items_container');
+    const count = document.getElementById('lp_count').value;
+    container.innerHTML = '';
+    for (let i = 1; i <= count; i++) {
+        container.innerHTML += `
+            <div class="item-card">
+                <h4>Latent Print Item #${i}</h4>
+                <div class="form-group"><label>Item Description</label><input type="text" id="lp_desc_${i}" placeholder="One (1) 9mm Shell Casing"></div>
+                <div class="row">
+                    <div class="form-group"><label>Status</label><select id="lp_status_${i}" onchange="toggleMatch('lp', ${i})"><option value="no">No usable prints</option><option value="yes">Prints Identified</option></select></div>
+                    <div class="form-group" id="lp_match_box_${i}" style="display:none;"><label>Identified to:</label><input type="text" id="lp_match_${i}" placeholder="Tariq Shareef"></div>
+                </div>
+            </div>`;
+    }
+}
+
+function genFieldsDNA() {
+    const container = document.getElementById('dna_items_container');
+    const count = document.getElementById('dna_count').value;
+    container.innerHTML = '';
+    for (let i = 1; i <= count; i++) {
+        container.innerHTML += `
+            <div class="item-card">
+                <h4>DNA Sample #${i}</h4>
+                <div class="form-group"><label>HEX Profile</label><input type="text" id="dna_hex_${i}" placeholder="4F506-F7354..."></div>
+                <div class="row">
+                    <div class="form-group"><label>Status</label><select id="dna_status_${i}" onchange="toggleMatch('dna', ${i})"><option value="no">Unmatched</option><option value="yes">Identified</option></select></div>
+                    <div class="form-group" id="dna_match_box_${i}" style="display:none;"><label>Match To (Name - Role)</label><input type="text" id="dna_match_${i}" placeholder="Tariq Shareef - VICTIM"></div>
+                </div>
+            </div>`;
+    }
+}
+
+function genFieldsNC() {
+    const container = document.getElementById('nc_items_container');
+    const count = document.getElementById('nc_count').value;
+    container.innerHTML = '';
+    
+    // Create dropdown options once
+    let drugOptions = Object.keys(drugData).map(key => `<option value="${key}">${key}</option>`).join('');
+
+    for (let i = 1; i <= count; i++) {
+        container.innerHTML += `
+            <div class="item-card">
+                <h4>Narcotic Item #${i}</h4>
+                <div class="row">
+                    <div class="form-group" style="flex:2;">
+                        <label>Substance Type</label>
+                        <select id="nc_drug_${i}">${drugOptions}</select>
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label>Weight / Quantity</label>
+                        <input type="number" id="nc_weight_${i}" placeholder="15">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>EL Tag (Optional)</label>
+                    <input type="text" id="nc_el_${i}" placeholder="EL-00123">
+                </div>
+            </div>`;
+    }
+}
+
+function toggleMatch(prefix, id) {
+    const status = document.getElementById(`${prefix}_status_${id}`).value;
+    document.getElementById(`${prefix}_match_box_${id}`).style.display = (status === 'yes') ? 'block' : 'none';
+}
+
+// BUILDERS
+function getAnalyst() {
+    const name = document.getElementById('global_name').value || "YOU FORGOT TO SET YOUR NAME!";
+    const badge = document.getElementById('global_badge').value || "BADGE # WITHOUT #";
+    return `${name} #${badge}`;
+}
+
+function getInitials()
+{
+    const names = document.getElementById('global_name').value.trim().split(' ');
+    return `${names[0][0]}${names[names.length-1][0]}`;
+}
+
+function buildBR() {
+    const req = document.getElementById('br_reqNum').value;
+    const date = document.getElementById('br_date').value;
+    const reqBy = document.getElementById('br_reqBy').value;
+    const email = document.getElementById('br_email').value;
+    const count = document.getElementById('br_count').value;
+    let ev = "", match = "", noMatch = "";
+
+    for (let i = 1; i <= count; i++) {
+        const desc = document.getElementById(`br_desc_${i}`).value;
+        const status = document.getElementById(`br_status_${i}`).value;
+        ev += `[*] Item ${i}: ${desc}\n`;
+        if (status === 'yes') match += `[*] Item ${i} - ${document.getElementById(`br_match_${i}`).value}\n`;
+        else noMatch += `[*] Item ${i} - UNK\n`;
+    }
+
+   const template = `[divbox2=white][font=Arial][aligntable=left,0,35,0,0,0,0][tsslogo=150][/aligntable]
+
+[center]Los Santos Police Department  
+Forensic Science Division  
+
+[size=130][b]Laboratory Report[/b][/size]  
+BR-${req}-${getInitials()}${date} / Req. #${req}  
+Report finalized: ${date}/2026[/center]  
+[br][/br]  
+[aligntable=right,0,0,30,0,0,0][size=90][b]Name Associated:[/b][space=10] UNK    
+[b]Offense:[/b][space=68] UNK  
+[b]Service:[/b][space=70] BALLISTIC ANALYSIS[/size][/aligntable]  
+[aligntable=left,0,40,0,0,0,0][size=90][b]DR #:[/b][space=78] BR-${req}-${getInitials()}${date}
+[b]Requested By:[/b][space=23] ${reqBy}
+[b]E-Mail:[/b][space=70]${email}[/size][/aligntable]  
+[br][/br]  
+[aligntable=left,0,40,0,0,0,0][size=90][b]Analysis Requested:[/b] [space=10] Cartridge case comparison
+[space=137] Ballistic restoration
+[space=137] NIBIN Entry
+[/aligntable]
+[br][/br]
+[br][/br]  
+
+
+[justify][size=90]I, the undersigned analyst, as a Criminalist employed by the Los Santos Police Department, am prepared to testify to the information provided in this report.[/size]  
+
+[u][b]Evidence Item(s):[/b] [/u]
+
+[list]  
+${ev}[/list]
+
+[u][b]Examination Results[/b]  [/u]
+
+All submitted firearms were collected from the Mission Row Station's Evidence and Property holding and withdrawn with authorization from the on-shift Property Officer. The items were transported to the Los Santos County Regional Crime Laboratory for analysis.
+
+Each firearm underwent a detailed physical examination, assessing for make, model, caliber, and serial number presence. Weapons with obliterated or missing serial numbers were further examined using chemical restoration techniques where applicable.
+
+Recovered shell casings and projectiles were compared against known NIBIN (National Integrated Ballistic Information Network) records. Each firearm was test-fired, and the resulting cartridge cases and projectiles were examined under comparative microscopy to evaluate rifling patterns, breech face marks, and extractor/ejector markings.
+
+[u][b]Conclusion(s)[/b][/u]
+
+[u]The following items resulted in a [color=green]MATCH[/color]:[/u]
+[list]
+${match}[/list]
+
+[u]The following items resulted in [color=red]NO MATCH[/color]:[/u]
+[list]
+${noMatch}[/list]
+
+All examined items were deemed functional, and no ballistic matches were found linking them to a prior crime scene(s). 
+
+[u][b]Preservation of Result(s)[/b][/u]
+
+The submitted item, as well as any associated relevant items, have been properly preserved in accordance with Forensic Science Division and ISO 17025 accredited laboratory guidelines. These items will be retained at the Los Santos County's Regional Crime Laboratory for future reference or any additional tests that may be required.
+
+[size=85]Analyst: ${getAnalyst()}[/size][/justify]
+
+[aligntable=left,0,0,0,0,0,0][size=75]Los Santos Police Department[/size][/aligntable]
+[aligntable=right,0,0,0,0,0,0][size=75]Forensic Science Division[/size][/aligntable][/divbox2]`;
+    showOutput(template);
+}
+
+function buildLP() {
+    const rNum = document.getElementById('lp_reqNum').value;
+    const date = document.getElementById('lp_date').value;
+    const req = document.getElementById('lp_reqBy').value;
+    const mail = document.getElementById('lp_email').value;
+    const count = document.getElementById('lp_count').value;
+    let items = "", results = "";
+
+    for (let i = 1; i <= count; i++) {
+        items += `[*] ${document.getElementById(`lp_desc_${i}`).value}\n`;
+        if (document.getElementById(`lp_status_${i}`).value === 'yes') {
+            results += `[*] Item ${i}: Latent prints [color=green]MATCHED[/color] to [color=blue]${document.getElementById(`lp_match_${i}`).value}[/color]\n`;
+        } else {
+            results += `[*] Item ${i}: [color=red]NO MATCH[/color].\n`;
+        }
+    }
+
+    const template = `[divbox2=white][aligntable=left,0,35,0,0,0,0][tsslogo=150][/aligntable]
+
+[center]Los Santos Police Department  
+Forensic Science Division  
+
+[size=130][b]Laboratory Report[/b][/size]  
+LP-${rNum}-${getInitials()}${date.replace(/\//g, '')} / Req. #${rNum}  
+Report finalized: ${date}/2026[/center]  
+[br][/br]  
+[aligntable=right,0,0,30,0,0,0][size=90][b]Name Associated:[/b][space=10] UNK  
+[b]Offense:[/b][space=68] UNK  
+[b]Service:[/b][space=70] LATENT PRINTS
+[space=123][color=transparent]Comparison[/color][/size][/aligntable]  
+[aligntable=left,0,40,0,0,0,0][size=90][b]DR #:[/b][space=78] LP-${rNum}-${getInitials()}${date.replace(/\//g, '')}
+[b]Requested By:[/b][space=23] ${req}
+[b]E-Mail:[/b][space=70] ${mail}[/size][/aligntable]  
+[br][/br]  
+[aligntable=left,0,40,0,0,0,0][size=90][b]Analysis Requested:[/b] [space=10] Latent Print Development
+[space=137] AFIS Searching
+[/aligntable]
+[br][/br]
+[br][/br]  
+
+[justify][size=90]I, the undersigned analyst, as a Criminalist employed by the Los Santos Police Department, am prepared to testify to the information provided in this report.[/size]
+
+[b]Evidence Item(s):[/b]
+[list]
+${items}[/list]
+
+[u][b]Latent Print Examination Results[/b][/u]
+
+All items were examined for latent prints and digitally imaged for further analysis. Friction ridge print examinations were conducted using the Analysis, Comparison, Evaluation, and Verification (ACE-V) process.
+
+[u]AFIS Searched:[/u][space=50] Local AFIS; DOJ (State of San Andreas) & AFIS;NGI (FBI AFIS)
+
+[u][b]Conclusion(s)[/b][/u]
+
+[list]
+${results}[/list]
+
+[u][b]Preservation of Result(s)[/b][/u]
+
+The submitted item, as well as any associated relevant items, have been properly preserved in accordance with Forensic Science Division and ISO 17025 accredited laboratory guidelines. These items will be retained at the Los Santos County's Regional Crime Laboratory for future reference or any additional tests that may be required.
+
+[size=85]Analyst: ${getAnalyst()}[/size][/justify]
+
+[aligntable=left,0,0,0,0,0,0][size=75]Los Santos Police Department[/size][/aligntable]
+[aligntable=right,0,0,0,0,0,0][size=75]Forensic Science Division[/size][/aligntable][/divbox2]`;
+    showOutput(template);
+}
+
+function buildDNA() {
+    const req = document.getElementById('dna_reqNum').value;
+    const date = document.getElementById('dna_date').value;
+    const count = document.getElementById('dna_count').value;
+    const mail = document.getElementById('dna_email').value;
+    const requester = document.getElementById('dna_reqBy').value;
+
+    let items = "", pos = "", unk = "";
+
+    for (let i = 1; i <= count; i++) {
+        items += `[*] Item ${i}: PRESERVED BLOOD SAMPLE\n`;
+        const hex = document.getElementById(`dna_hex_${i}`).value;
+        if (document.getElementById(`dna_status_${i}`).value === 'yes') {
+            pos += `[*] ${hex} - [color=blue]${document.getElementById(`dna_match_${i}`).value}[/color]\n`;
+        } else {
+            unk += `[*] ${hex} - [color=red]UNK[/color]\n`;
+        }
+    }
+
+    const template = `[divbox2=white][font=Arial][aligntable=left,0,35,0,0,0,0][tsslogo=150][/aligntable]
+
+[center]Los Santos Police Department  
+Forensic Science Division  
+
+[size=130][b]Laboratory Report[/b][/size]  
+SDNA-${req}-${getInitials()}${date} / Req. #${req}
+Report finalized: ${date}/2026[/center]  
+[br][/br]  
+[aligntable=right,0,0,30,0,0,0][size=90][b]Name Associated:[/b][space=10] UNK
+[b]Offense:[/b][space=68] UNK  
+[b]Service:[/b][space=70] SEROLOGY/DNA - BLOOD WORK
+[space=123][color=transparent]Comparison[/color][/size][/aligntable]  
+[aligntable=left,0,40,0,0,0,0][size=90][b]DR #:[/b][space=78] SDNA-${req}-${getInitials()}${date}
+[b]Requested By:[/b][space=23] ${requester}
+[b]E-Mail:[/b][space=70] ${mail} [/size][/aligntable]  
+[br][/br]  
+[aligntable=left,0,40,0,0,0,0][size=90][b]Analysis Requested:[/b] [space=10] Serology Identification
+[space=135] RSID Confirmatory Test
+[/aligntable]
+[br][/br]
+[br][/br]  
+
+[justify][size=90]I, the undersigned analyst, as a Criminalist employed by the Los Santos Police Department, am prepared to testify to the information provided in this report.[/size]
+
+[b]Evidence Item(s):[/b]
+[list]
+${items}[/list]
+
+[u][b]Methodology & Examination[/b][/u]
+
+All items were subject to amplification of extracted DNA and performed using the Polymerase Chain Reaction (PCR) and profiled at the following STR loci (locus abbreviations used in this report are noted in parentheses):  
+D3S11358 (D3), vWA, D16S539 (D16), CSF1PO (CSF), TPOX, D8S1179 (D8), D21S11 (D21), D18S51 (D18), D2S441, D19S433 (D19), TH01, FGA, D22S1045 (D22), D5S818 (D5), D13S317 (D13), D7S820 (D7), SE33, D10S1248 (D10), D1S1656 (D1), D12S391 (D12), D2S1338, Y-Indel (a Y chromosome insertion/deletion locus), and the sex-determining marker, Amelogenin.
+
+[u][b]Comparison & Results[/b][/u]
+
+The generated DNA profiles were compared against the national CODIS records.
+
+The following DNA samples produced matches and were [color=green]positively identified[/color]:  
+[list]  
+${pos || "[*] None."}
+[/list]
+
+The following samples produced [color=red]unmatched DNA profiles[/color]:  
+[list]  
+${unk || "[*] None."}
+[/list]
+
+[u][b]Preservation of Result(s)[/b][/u]
+
+The submitted items, as well as any associated relevant items, have been properly preserved in accordance with Forensic Science Division and ISO 17025 accredited laboratory guidelines. These items will be retained at the Los Santos County's Regional Crime Laboratory for future reference or any additional tests that may be required.
+
+[size=85]Analyst: ${getAnalyst()}[/size][/justify]
+
+[aligntable=left,0,0,0,0,0,0][size=75]Los Santos Police Department[/size][/aligntable]
+[aligntable=right,0,0,0,0,0,0][size=75]Forensic Science Division[/size][/aligntable][/divbox2]`;
+    showOutput(template);
+}
+
+
+
+function buildNC() {
+    const reqNum = document.getElementById('nc_reqNum').value;
+    const date = document.getElementById('nc_drNum').value;
+    const reqBy = document.getElementById('nc_reqBy').value;
+    const email = document.getElementById('nc_email').value;
+    const count = document.getElementById('nc_count').value;
+
+    let evList = "", resList = "";
+    let allTests = new Set();
+
+    for (let i = 1; i <= count; i++) {
+        const drugKey = document.getElementById(`nc_drug_${i}`).value;
+        const weight = document.getElementById(`nc_weight_${i}`).value || 0;
+        const el = document.getElementById(`nc_el_${i}`).value || "N/A";
+        const drug = drugData[drugKey];
+
+        const label = `Item ${i} (${el})`;
+        const descriptor = drug.descriptor_template.replace('{weight}', weight);
+        
+        evList += `[*] ${label} – ${descriptor}\n`;
+        resList += `[b]${label}[/b] - [color=green]Result: Conclusive – ${drug.formal_name}[/color]\n[list]${drug.description}[/list]\n\n`;
+        
+        drug.tests.forEach(t => allTests.add(t));
+    }
+
+    const testStr = Array.from(allTests).join(", ");
+
+    const template = `[divbox2=white][font=Arial][aligntable=left,0,35,0,0,0,0][tsslogo=150][/aligntable]
+[center]Los Santos Police Department  
+Forensic Science Division  
+[size=130][b]Laboratory Report[/b][/size]  
+NAU-${reqNum}-${getInitials()}${date} / Req. #${reqNum}
+Report finalized: ${date}[/center]  
+[br][/br]  
+[aligntable=right,0,0,30,0,0,0][size=90][b]Name Associated:[/b][space=10] UNK  
+[b]Offense:[/b][space=68] UNK  
+[b]Service:[/b][space=70] CONFIRMATORY TEST[/size][/aligntable]  
+[aligntable=left,0,40,0,0,0,0][size=90][b]DR #:[/b][space=78] NAU-${reqNum}-${getInitials()}${date} 
+[b]Requested By:[/b][space=23] ${reqBy}  
+[b]E-Mail:[/b][space=70] ${email}[/size][/aligntable]  
+[br][/br]  
+[aligntable=left,0,40,0,0,0,0][size=90][b]Analysis Requested:[/b] [space=10] Presumptive Development
+[space=137] Confirmatory Test Screening[/aligntable]
+[br][/br][br][/br]  
+[justify][size=90]I, the undersigned analyst, as a Criminalist employed by the Los Santos Police Department, am prepared to testify to the information provided in this report.[/size]  
+[u][b]Evidence Item(s):[/b][/u]
+[list]
+${evList}[/list]
+[u][b]Examination Results[/b][/u]
+${resList}
+[u][b]Conclusion(s)[/b][/u]
+The submitted substance(s) were analyzed using the following methods: [b]${testStr}[/b]. The analysis confirmed the presence of controlled substances as listed above.
+[u][b]Preservation of Result(s)[/b][/u]
+The submitted item, as well as any associated relevant items, have been properly preserved in accordance with Forensic Science Division and ISO 17025 accredited laboratory guidelines.
+[size=85]Analyst: ${getAnalyst()}[/size][/justify]
+[aligntable=left,0,0,0,0,0,0][size=75]Los Santos Police Department[/size][/aligntable]
+[aligntable=right,0,0,0,0,0,0][size=75]Forensic Science Division[/size][/aligntable][/divbox2]`;
+
+    showOutput(template);
+}
+
+
+function showOutput(text) {
+    document.getElementById("universal_output").value = text;
+    document.getElementById("output-area").style.display = "block";
+    window.scrollTo(0, document.body.scrollHeight);
+}
+
+function copyCode() {
+    const copyText = document.getElementById("universal_output");
+    copyText.select();
+    document.execCommand("copy");
+    alert("BBCode copied to clipboard!");
+}
+
+// Initial Generation
+window.onload = function() { 
+    loadStaff(); // Load saved info
+    genFieldsBR(); 
+    genFieldsLP(); 
+    genFieldsDNA(); 
+    genFieldsNC();
+};
+</script>
+
+</body>
+</html>
