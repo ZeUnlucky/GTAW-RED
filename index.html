@@ -862,36 +862,6 @@ document.querySelectorAll("input[type=checkbox]").forEach(cb => {
   });
 
 
-function genFieldsNC() {
-    const container = document.getElementById('nc_items_container');
-    const count = document.getElementById('nc_count').value;
-    container.innerHTML = '';
-    
-    // Create dropdown options once
-    let drugOptions = Object.keys(drugData).map(key => `<option value="${key}">${key}</option>`).join('');
-
-    for (let i = 1; i <= count; i++) {
-        container.innerHTML += `
-            <div class="item-card">
-                <h4>Narcotic Item #${i}</h4>
-                <div class="row">
-                    <div class="form-group" style="flex:2;">
-                        <label>Substance Type</label>
-                        <select id="nc_drug_${i}">${drugOptions}</select>
-                    </div>
-                    <div class="form-group" style="flex:1;">
-                        <label>Weight / Quantity</label>
-                        <input type="number" id="nc_weight_${i}" placeholder="15">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>EL Tag (Optional)</label>
-                    <input type="text" id="nc_el_${i}" placeholder="EL-00123">
-                </div>
-            </div>`;
-    }
-}
-
 function toggleMatch(prefix, id) {
     const status = document.getElementById(`${prefix}_status_${id}`).value;
     document.getElementById(`${prefix}_match_box_${id}`).style.display = (status === 'yes') ? 'block' : 'none';
@@ -902,7 +872,7 @@ function getAnalyst() {
     const rank = document.getElementById('global_rank').value || "Recruitment Officer";
     const name = document.getElementById('global_name').value || "YOU FORGOT TO SET YOUR NAME!";
     const divRank = document.getElementById('global_divrank').value || "Police Officer II";
-    return `${name}, ${rank}\n ${divRank}`;
+    return `${name}, ${rank}\n${divRank}`;
 }
 
 function getInitials()
