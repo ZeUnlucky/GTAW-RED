@@ -126,7 +126,8 @@
 <div class="nav-tabs">
     <button class="tab-btn" onclick="openTab(event, 'prelim-r')">PRELIMINARY - RECEIVED</button>
     <button class="tab-btn active" onclick="openTab(event, 'prelim-ar')">PRELIMINARY - ACTION REQUIRED</button>
-    <button class="tab-btn" onclick="openTab(event, 'latent-prints')">OTHER</button>
+    <button class="tab-btn" onclick="openTab(event, 'prelim-ac')">PRELIMINARY - ACCEPTED</button>
+    <button class="tab-btn" onclick="openTab(event, 'prelim-ap')">PRELIMINARY - APPROVED</button>
     
 </div>
 
@@ -787,28 +788,36 @@
             </div>
 
         </div>
-        <button class="build-btn" onclick="buildBR()">Generate Preliminary Response BBCode</button>
+        <button class="build-btn" onclick="buildAR()">Generate Preliminary Response BBCode</button>
     </div>
 
     <div id="prelim-r" class="form-section">
-        <h2>Latent Print Report</h2>
+        <h2>Preliminary Response Format</h2>
         <div class="row">
-            <div class="form-group"><label>Report #</label><input type="text" id="lp_reqNum" placeholder="107"></div>
-            <div class="form-group"><label>Date (DD/MM)</label><input type="text" id="lp_date" placeholder="01/10"></div>
+           <div class="form-group"><label>Applicant Full Name</label><input type="text" id="plr_fullName" placeholder="Johnny Doepe"></div>
+            <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="plr_date" placeholder="December 28th, 2026"></div>
         </div>
-        <div class="row">
-            <div class="form-group"><label>Requested By</label><input type="text" id="lp_reqBy" placeholder="Det. John Doe"></div>
-            <div class="form-group"><label>Email</label><input type="text" id="lp_email" placeholder="j.doe@lspd.gov"></div>
-        </div>
-        <div class="section-title">Evidence Configuration</div>
-        <div class="form-group">
-            <label>Number of Items:</label>
-            <input type="number" id="lp_count" value="1" min="1" onchange="genFieldsLP()">
-        </div>
-        <div id="lp_items_container"></div>
-        <button class="build-btn" onclick="buildLP()">Generate Latent Print BBCode</button>
+        <button class="build-btn" onclick="buildR()">Generate Preliminary Response BBCode</button>
     </div>
 
+    <div id="prelim-ac" class="form-section">
+        <h2>Preliminary Acceptance Format</h2>
+        <div class="row">
+           <div class="form-group"><label>Applicant Full Name</label><input type="text" id="plac_fullName" placeholder="Johnny Doepe"></div>
+            <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="plac_date" placeholder="December 28th, 2026"></div>
+        </div>
+        <button class="build-btn" onclick="buildAC()">Generate Preliminary Response BBCode</button>
+    </div>
+
+
+      <div id="prelim-ap" class="form-section">
+        <h2>Preliminary Approval Format</h2>
+        <div class="row">
+           <div class="form-group"><label>Applicant Full Name</label><input type="text" id="plap_fullName" placeholder="Johnny Doepe"></div>
+            <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="plap_date" placeholder="December 28th, 2026"></div>
+        </div>
+        <button class="build-btn" onclick="buildAP()">Generate Preliminary Response BBCode</button>
+    </div>
 
     <div id="output-area" style="display:none; margin-top:40px; border-top: 2px solid #eee;">
         <div class="section-title">Generated BBCode Output</div>
@@ -854,39 +863,6 @@ document.querySelectorAll("input[type=checkbox]").forEach(cb => {
     });
   });
 
-function genFieldsLP() {
-    const container = document.getElementById('lp_items_container');
-    const count = document.getElementById('lp_count').value;
-    container.innerHTML = '';
-    for (let i = 1; i <= count; i++) {
-        container.innerHTML += `
-            <div class="item-card">
-                <h4>Latent Print Item #${i}</h4>
-                <div class="form-group"><label>Item Description</label><input type="text" id="lp_desc_${i}" placeholder="One (1) 9mm Shell Casing"></div>
-                <div class="row">
-                    <div class="form-group"><label>Status</label><select id="lp_status_${i}" onchange="toggleMatch('lp', ${i})"><option value="no">No usable prints</option><option value="yes">Prints Identified</option></select></div>
-                    <div class="form-group" id="lp_match_box_${i}" style="display:none;"><label>Identified to:</label><input type="text" id="lp_match_${i}" placeholder="Tariq Shareef"></div>
-                </div>
-            </div>`;
-    }
-}
-
-function genFieldsDNA() {
-    const container = document.getElementById('dna_items_container');
-    const count = document.getElementById('dna_count').value;
-    container.innerHTML = '';
-    for (let i = 1; i <= count; i++) {
-        container.innerHTML += `
-            <div class="item-card">
-                <h4>DNA Sample #${i}</h4>
-                <div class="form-group"><label>HEX Profile</label><input type="text" id="dna_hex_${i}" placeholder="4F506-F7354..."></div>
-                <div class="row">
-                    <div class="form-group"><label>Status</label><select id="dna_status_${i}" onchange="toggleMatch('dna', ${i})"><option value="no">Unmatched</option><option value="yes">Identified</option></select></div>
-                    <div class="form-group" id="dna_match_box_${i}" style="display:none;"><label>Match To (Name - Role)</label><input type="text" id="dna_match_${i}" placeholder="Tariq Shareef - VICTIM"></div>
-                </div>
-            </div>`;
-    }
-}
 
 function genFieldsNC() {
     const container = document.getElementById('nc_items_container');
@@ -928,7 +904,7 @@ function getAnalyst() {
     const rank = document.getElementById('global_rank').value || "Recruitment Officer";
     const name = document.getElementById('global_name').value || "YOU FORGOT TO SET YOUR NAME!";
     const badge = document.getElementById('global_badge').value || "BADGE # WITHOUT #";
-    return `${rank} ${name} #${badge}`;
+    return `${name} #${badge}, ${rank}`;
 }
 
 function getInitials()
@@ -937,288 +913,147 @@ function getInitials()
     return `${names[0][0]}${names[names.length-1][0]}`;
 }
 
-function buildPL() {
-    const req = document.getElementById('pl_reqNum').value;
+function dataSetToString(dataset)
+{
+    let ret = dataset;
+    return ret.replace('f', '').replace('-', '.').replace('-', '.')
+}
+
+function buildAR() {
+    const fullName = document.getElementById('pl_fullName').value;
     const date = document.getElementById('pl_date').value;
    
-    let ev = "", match = "", noMatch = "";
+    let ev = "";
 
-    for (let i = 1; i <= count; i++) {
-        const desc = document.getElementById(`br_desc_${i}`).value;
-        const status = document.getElementById(`br_status_${i}`).value;
-        ev += `[*] Item ${i}: ${desc}\n`;
-        if (status === 'yes') match += `[*] Item ${i} - ${document.getElementById(`br_match_${i}`).value}\n`;
-        else noMatch += `[*] Item ${i} - UNK\n`;
-    }
+    const uncheckedTargets = Array.from(
+    document.querySelectorAll('input[type="checkbox"]:not(:checked)')
+    ).map(cb => cb.dataset.target);
 
-   const template = `[divbox2=white][font=Arial][aligntable=left,0,35,0,0,0,0][tsslogo=150][/aligntable]
+    uncheckedTargets.forEach(tag => {
+        ev += `[*] ${dataSetToString(tag)}: ${document.getElementById(tag).value}\n`
+    });
 
-[center]Los Santos Police Department  
-Forensic Science Division  
+   const template = `[divbox3=white,0,transparent,5,14,14][nletterhead][/nletterhead][font=Arial]
+${date}
 
-[size=130][b]Laboratory Report[/b][/size]  
-BR-${req}-${getInitials()}${date} / Req. #${req}  
-Report finalized: ${date}/2026[/center]  
-[br][/br]  
-[aligntable=right,0,0,30,0,0,0][size=90][b]Name Associated:[/b][space=10] UNK    
-[b]Offense:[/b][space=68] UNK  
-[b]Service:[/b][space=70] BALLISTIC ANALYSIS[/size][/aligntable]  
-[aligntable=left,0,40,0,0,0,0][size=90][b]DR #:[/b][space=78] BR-${req}-${getInitials()}${date}
-[b]Requested By:[/b][space=23] ${reqBy}
-[b]E-Mail:[/b][space=70]${email}[/size][/aligntable]  
-[br][/br]  
-[aligntable=left,0,40,0,0,0,0][size=90][b]Analysis Requested:[/b] [space=10] Cartridge case comparison
-[space=137] Ballistic restoration
-[space=137] NIBIN Entry
-[/aligntable]
-[br][/br]
-[br][/br]  
+${fullName}
 
+[b]POLICE OFFICER PRELIMINARY BACKGROUND APPLICATION — ACTION REQUIRED[/b]
 
-[justify][size=90]I, the undersigned analyst, as a Criminalist employed by the Los Santos Police Department, am prepared to testify to the information provided in this report.[/size]  
-
-[u][b]Evidence Item(s):[/b] [/u]
-
-[list]  
-${ev}[/list]
-
-[u][b]Examination Results[/b]  [/u]
-
-All submitted firearms were collected from the Mission Row Station's Evidence and Property holding and withdrawn with authorization from the on-shift Property Officer. The items were transported to the Los Santos County Regional Crime Laboratory for analysis.
-
-Each firearm underwent a detailed physical examination, assessing for make, model, caliber, and serial number presence. Weapons with obliterated or missing serial numbers were further examined using chemical restoration techniques where applicable.
-
-Recovered shell casings and projectiles were compared against known NIBIN (National Integrated Ballistic Information Network) records. Each firearm was test-fired, and the resulting cartridge cases and projectiles were examined under comparative microscopy to evaluate rifling patterns, breech face marks, and extractor/ejector markings.
-
-[u][b]Conclusion(s)[/b][/u]
-
-[u]The following items resulted in a [color=green]MATCH[/color]:[/u]
-[list]
-${match}[/list]
-
-[u]The following items resulted in [color=red]NO MATCH[/color]:[/u]
-[list]
-${noMatch}[/list]
-
-All examined items were deemed functional, and no ballistic matches were found linking them to a prior crime scene(s). 
-
-[u][b]Preservation of Result(s)[/b][/u]
-
-The submitted item, as well as any associated relevant items, have been properly preserved in accordance with Forensic Science Division and ISO 17025 accredited laboratory guidelines. These items will be retained at the Los Santos County's Regional Crime Laboratory for future reference or any additional tests that may be required.
-
-[size=85]Analyst: ${getAnalyst()}[/size][/justify]
-
-[aligntable=left,0,0,0,0,0,0][size=75]Los Santos Police Department[/size][/aligntable]
-[aligntable=right,0,0,0,0,0,0][size=75]Forensic Science Division[/size][/aligntable][/divbox2]`;
-    showOutput(template);
-}
-
-function buildLP() {
-    const rNum = document.getElementById('lp_reqNum').value;
-    const date = document.getElementById('lp_date').value;
-    const req = document.getElementById('lp_reqBy').value;
-    const mail = document.getElementById('lp_email').value;
-    const count = document.getElementById('lp_count').value;
-    let items = "", results = "";
-
-    for (let i = 1; i <= count; i++) {
-        items += `[*] ${document.getElementById(`lp_desc_${i}`).value}\n`;
-        if (document.getElementById(`lp_status_${i}`).value === 'yes') {
-            results += `[*] Item ${i}: Latent prints [color=green]MATCHED[/color] to [color=blue]${document.getElementById(`lp_match_${i}`).value}[/color]\n`;
-        } else {
-            results += `[*] Item ${i}: [color=red]NO MATCH[/color].\n`;
-        }
-    }
-
-    const template = `[divbox2=white][aligntable=left,0,35,0,0,0,0][tsslogo=150][/aligntable]
-
-[center]Los Santos Police Department  
-Forensic Science Division  
-
-[size=130][b]Laboratory Report[/b][/size]  
-LP-${rNum}-${getInitials()}${date.replace(/\//g, '')} / Req. #${rNum}  
-Report finalized: ${date}/2026[/center]  
-[br][/br]  
-[aligntable=right,0,0,30,0,0,0][size=90][b]Name Associated:[/b][space=10] UNK  
-[b]Offense:[/b][space=68] UNK  
-[b]Service:[/b][space=70] LATENT PRINTS
-[space=123][color=transparent]Comparison[/color][/size][/aligntable]  
-[aligntable=left,0,40,0,0,0,0][size=90][b]DR #:[/b][space=78] LP-${rNum}-${getInitials()}${date.replace(/\//g, '')}
-[b]Requested By:[/b][space=23] ${req}
-[b]E-Mail:[/b][space=70] ${mail}[/size][/aligntable]  
-[br][/br]  
-[aligntable=left,0,40,0,0,0,0][size=90][b]Analysis Requested:[/b] [space=10] Latent Print Development
-[space=137] AFIS Searching
-[/aligntable]
-[br][/br]
-[br][/br]  
-
-[justify][size=90]I, the undersigned analyst, as a Criminalist employed by the Los Santos Police Department, am prepared to testify to the information provided in this report.[/size]
-
-[b]Evidence Item(s):[/b]
-[list]
-${items}[/list]
-
-[u][b]Latent Print Examination Results[/b][/u]
-
-All items were examined for latent prints and digitally imaged for further analysis. Friction ridge print examinations were conducted using the Analysis, Comparison, Evaluation, and Verification (ACE-V) process.
-
-[u]AFIS Searched:[/u][space=50] Local AFIS; DOJ (State of San Andreas) & AFIS;NGI (FBI AFIS)
-
-[u][b]Conclusion(s)[/b][/u]
-
-[list]
-${results}[/list]
-
-[u][b]Preservation of Result(s)[/b][/u]
-
-The submitted item, as well as any associated relevant items, have been properly preserved in accordance with Forensic Science Division and ISO 17025 accredited laboratory guidelines. These items will be retained at the Los Santos County's Regional Crime Laboratory for future reference or any additional tests that may be required.
-
-[size=85]Analyst: ${getAnalyst()}[/size][/justify]
-
-[aligntable=left,0,0,0,0,0,0][size=75]Los Santos Police Department[/size][/aligntable]
-[aligntable=right,0,0,0,0,0,0][size=75]Forensic Science Division[/size][/aligntable][/divbox2]`;
-    showOutput(template);
-}
-
-function buildDNA() {
-    const req = document.getElementById('dna_reqNum').value;
-    const date = document.getElementById('dna_date').value;
-    const count = document.getElementById('dna_count').value;
-    const mail = document.getElementById('dna_email').value;
-    const requester = document.getElementById('dna_reqBy').value;
-
-    let items = "", pos = "", unk = "";
-
-    for (let i = 1; i <= count; i++) {
-        items += `[*] Item ${i}: PRESERVED BLOOD SAMPLE\n`;
-        const hex = document.getElementById(`dna_hex_${i}`).value;
-        if (document.getElementById(`dna_status_${i}`).value === 'yes') {
-            pos += `[*] ${hex} - [color=blue]${document.getElementById(`dna_match_${i}`).value}[/color]\n`;
-        } else {
-            unk += `[*] ${hex} - [color=red]UNK[/color]\n`;
-        }
-    }
-
-    const template = `[divbox2=white][font=Arial][aligntable=left,0,35,0,0,0,0][tsslogo=150][/aligntable]
-
-[center]Los Santos Police Department  
-Forensic Science Division  
-
-[size=130][b]Laboratory Report[/b][/size]  
-SDNA-${req}-${getInitials()}${date} / Req. #${req}
-Report finalized: ${date}/2026[/center]  
-[br][/br]  
-[aligntable=right,0,0,30,0,0,0][size=90][b]Name Associated:[/b][space=10] UNK
-[b]Offense:[/b][space=68] UNK  
-[b]Service:[/b][space=70] SEROLOGY/DNA - BLOOD WORK
-[space=123][color=transparent]Comparison[/color][/size][/aligntable]  
-[aligntable=left,0,40,0,0,0,0][size=90][b]DR #:[/b][space=78] SDNA-${req}-${getInitials()}${date}
-[b]Requested By:[/b][space=23] ${requester}
-[b]E-Mail:[/b][space=70] ${mail} [/size][/aligntable]  
-[br][/br]  
-[aligntable=left,0,40,0,0,0,0][size=90][b]Analysis Requested:[/b] [space=10] Serology Identification
-[space=135] RSID Confirmatory Test
-[/aligntable]
-[br][/br]
-[br][/br]  
-
-[justify][size=90]I, the undersigned analyst, as a Criminalist employed by the Los Santos Police Department, am prepared to testify to the information provided in this report.[/size]
-
-[b]Evidence Item(s):[/b]
-[list]
-${items}[/list]
-
-[u][b]Methodology & Examination[/b][/u]
-
-All items were subject to amplification of extracted DNA and performed using the Polymerase Chain Reaction (PCR) and profiled at the following STR loci (locus abbreviations used in this report are noted in parentheses):  
-D3S11358 (D3), vWA, D16S539 (D16), CSF1PO (CSF), TPOX, D8S1179 (D8), D21S11 (D21), D18S51 (D18), D2S441, D19S433 (D19), TH01, FGA, D22S1045 (D22), D5S818 (D5), D13S317 (D13), D7S820 (D7), SE33, D10S1248 (D10), D1S1656 (D1), D12S391 (D12), D2S1338, Y-Indel (a Y chromosome insertion/deletion locus), and the sex-determining marker, Amelogenin.
-
-[u][b]Comparison & Results[/b][/u]
-
-The generated DNA profiles were compared against the national CODIS records.
-
-The following DNA samples produced matches and were [color=green]positively identified[/color]:  
-[list]  
-${pos || "[*] None."}
+Thank you for applying for the position of Police Officer with the City of Los Santos. We have carefully evaluated your background in light of the City of Los Santos' Background Standards for public safety positions. Based upon a review of the information you provided, your preliminary background application status has been changed to action required and requires your immediate attention to address the following findings:
+[list=square]
+${ev}
 [/list]
+At this time, you may elect to either withdraw your application or action the items listed above within the next [b]forty-eight (48) hours[/b]. Should you have any question, concern or require any information in regards to this decision, please do not hesitate to contact the Officer-in-Charge, Recruitment Section.
 
-The following samples produced [color=red]unmatched DNA profiles[/color]:  
-[list]  
-${unk || "[*] None."}
-[/list]
+[ooc]Please submit a reply to this thread once you have actioned the aforementioned concerns.[/ooc]
 
-[u][b]Preservation of Result(s)[/b][/u]
+Respectfully,
 
-The submitted items, as well as any associated relevant items, have been properly preserved in accordance with Forensic Science Division and ISO 17025 accredited laboratory guidelines. These items will be retained at the Los Santos County's Regional Crime Laboratory for future reference or any additional tests that may be required.
+DWAYNE BURKE
+Chief of Police
 
-[size=85]Analyst: ${getAnalyst()}[/size][/justify]
+${getAnalyst()}
+Recruitment and Employment Division
 
-[aligntable=left,0,0,0,0,0,0][size=75]Los Santos Police Department[/size][/aligntable]
-[aligntable=right,0,0,0,0,0,0][size=75]Forensic Science Division[/size][/aligntable][/divbox2]`;
+[br][/br]
+[center][i][b]AN EQUAL EMPLOYMENT OPPORTUNITY EMPLOYER
+[url=https://lspd.gta.world]www.LSPDonline.org[/url]
+[url=https://lspd.gta.world/viewforum.php?f=2188]www.joinLSPD.com[/url][/b][/i][/center][/font][/divbox3]`;
+    showOutput(template);
+}
+
+function buildR() {
+     const fullName = document.getElementById('plr_fullName').value;
+    const date = document.getElementById('plr_date').value;
+   
+
+    const template = `[divbox3=white,0,transparent,5,14,14][nletterhead][/nletterhead][font=Arial]
+${date}
+
+${fullName}
+
+[b]POLICE OFFICER PRELIMINARY BACKGROUND APPLICATION — RECEIVED[/b]
+
+Thank you for applying for the position of Police Officer with the City of Los Santos. This letter is to inform you that your preliminary background application was received by the Recruitment and Employment Division. Your background will now be thoroughly evaluated in accordance with the City of Los Santos' Background Standards for public safety positions. You should expect a written response detailing the determination of this review within the next twenty-four (24) hours.
+
+During this time frame, please refrain from contacting any Department employee to receive an update, or otherwise attempting to speed up the reviewal process, as this will reflect negatively on you. Should there be a change necessitating an update to your application, or you no longer seek employment within the Department, please notify the Recruitment and Employment Division as soon as possible by replying to this letter.
+
+Respectfully,
+
+DWAYNE BURKE
+Chief of Police
+
+${getAnalyst()}
+Recruitment and Employment Division
+
+[br][/br]
+[center][i][b]AN EQUAL EMPLOYMENT OPPORTUNITY EMPLOYER
+[url=https://lspd.gta.world]www.LSPDonline.org[/url]
+[url=https://lspd.gta.world/viewforum.php?f=2188]www.joinLSPD.com[/url][/b][/i][/center][/font][/divbox3]`;
     showOutput(template);
 }
 
 
+function buildAC() {
+     const fullName = document.getElementById('plac_fullName').value;
+    const date = document.getElementById('plac_date').value;
+   
 
-function buildNC() {
-    const reqNum = document.getElementById('nc_reqNum').value;
-    const date = document.getElementById('nc_drNum').value;
-    const reqBy = document.getElementById('nc_reqBy').value;
-    const email = document.getElementById('nc_email').value;
-    const count = document.getElementById('nc_count').value;
+    const template = `[divbox3=white,0,transparent,5,14,14][nletterhead][/nletterhead][font=Arial]
+${date}
 
-    let evList = "", resList = "";
-    let allTests = new Set();
+${fullName}
 
-    for (let i = 1; i <= count; i++) {
-        const drugKey = document.getElementById(`nc_drug_${i}`).value;
-        const weight = document.getElementById(`nc_weight_${i}`).value || 0;
-        const el = document.getElementById(`nc_el_${i}`).value || "N/A";
-        const drug = drugData[drugKey];
+[b]POLICE OFFICER PRELIMINARY BACKGROUND APPLICATION — ACCEPTED[/b]
 
-        const label = `Item ${i} (${el})`;
-        const descriptor = drug.descriptor_template.replace('{weight}', weight);
-        
-        evList += `[*] ${label} – ${descriptor}\n`;
-        resList += `[b]${label}[/b] - [color=green]Result: Conclusive – ${drug.formal_name}[/color]\n[list]${drug.description}[/list]\n\n`;
-        
-        drug.tests.forEach(t => allTests.add(t));
-    }
+Thank you for applying for the position of Police Officer with the City of Los Santos. We have carefully evaluated your background in accordance with the City of Los Santos' Background Standards for public safety positions. Based upon an initial review of the information you have provided, your preliminary background application has been deemed up to standard and will now undergo a secondary review by a Recruitment Supervisor. You should expect a written response detailing the determination of this review within the next twenty-four (24) hours.
 
-    const testStr = Array.from(allTests).join(", ");
+Please be patient whilst this review is completed. During this time, please refrain from contacting any Department employee to receive an update, or otherwise attempting to speed up the process, as this will reflect negatively on you. Should you no longer seek employment within the Department, please notify the Recruitment and Employment Division as soon as possible by replying to this letter.
 
-    const template = `[divbox2=white][font=Arial][aligntable=left,0,35,0,0,0,0][tsslogo=150][/aligntable]
-[center]Los Santos Police Department  
-Forensic Science Division  
-[size=130][b]Laboratory Report[/b][/size]  
-NAU-${reqNum}-${getInitials()}${date} / Req. #${reqNum}
-Report finalized: ${date}[/center]  
-[br][/br]  
-[aligntable=right,0,0,30,0,0,0][size=90][b]Name Associated:[/b][space=10] UNK  
-[b]Offense:[/b][space=68] UNK  
-[b]Service:[/b][space=70] CONFIRMATORY TEST[/size][/aligntable]  
-[aligntable=left,0,40,0,0,0,0][size=90][b]DR #:[/b][space=78] NAU-${reqNum}-${getInitials()}${date} 
-[b]Requested By:[/b][space=23] ${reqBy}  
-[b]E-Mail:[/b][space=70] ${email}[/size][/aligntable]  
-[br][/br]  
-[aligntable=left,0,40,0,0,0,0][size=90][b]Analysis Requested:[/b] [space=10] Presumptive Development
-[space=137] Confirmatory Test Screening[/aligntable]
-[br][/br][br][/br]  
-[justify][size=90]I, the undersigned analyst, as a Criminalist employed by the Los Santos Police Department, am prepared to testify to the information provided in this report.[/size]  
-[u][b]Evidence Item(s):[/b][/u]
-[list]
-${evList}[/list]
-[u][b]Examination Results[/b][/u]
-${resList}
-[u][b]Conclusion(s)[/b][/u]
-The submitted substance(s) were analyzed using the following methods: [b]${testStr}[/b]. The analysis confirmed the presence of controlled substances as listed above.
-[u][b]Preservation of Result(s)[/b][/u]
-The submitted item, as well as any associated relevant items, have been properly preserved in accordance with Forensic Science Division and ISO 17025 accredited laboratory guidelines.
-[size=85]Analyst: ${getAnalyst()}[/size][/justify]
-[aligntable=left,0,0,0,0,0,0][size=75]Los Santos Police Department[/size][/aligntable]
-[aligntable=right,0,0,0,0,0,0][size=75]Forensic Science Division[/size][/aligntable][/divbox2]`;
+Respectfully,
 
+DWAYNE BURKE
+Chief of Police
+
+${getAnalyst()}
+Recruitment and Employment Division
+
+[br][/br]
+[center][i][b]AN EQUAL EMPLOYMENT OPPORTUNITY EMPLOYER
+[url=https://lspd.gta.world]www.LSPDonline.org[/url]
+[url=https://lspd.gta.world/viewforum.php?f=2188]www.joinLSPD.com[/url][/b][/i][/center][/font][/divbox3]`;
+    showOutput(template);
+}
+
+function buildAP() {
+     const fullName = document.getElementById('plap_fullName').value;
+    const date = document.getElementById('plap_date').value;
+   
+
+    const template = `[divbox3=white,0,transparent,5,14,14][nletterhead][/nletterhead][font=Arial]
+${date}
+
+${fullName}
+
+[b]POLICE OFFICER PRELIMINARY BACKGROUND APPLICATION — APPROVED[/b]
+
+Following a review of your preliminary background application by a Recruitment Supervisor, we are pleased to inform you that your application has been approved and you have been deemed eligible to continue through to the next step of the selection process. The next step is to attend a Police Academy Session where your aptitude for the position will be tested. These sessions typically last for a full day and will examine your fitness in both body and mind. In addition, you will be graded on the attitude you show towards the role and the skills you demonstrate on the day.
+
+Within the next twelve (12) hours from the date and time of this letter, you will receive access to the [url=https://lspd.gta.world/viewforum.php?f=504]Police Officer Cadet Area[/url]. Before signing up for your attendance at the Police Academy Session, you are required to read and understand all relevant documentation.
+
+Respectfully,
+
+DWAYNE BURKE
+Chief of Police
+
+${getAnalyst()}
+Recruitment and Employment Division
+
+[br][/br]
+[center][i][b]AN EQUAL EMPLOYMENT OPPORTUNITY EMPLOYER
+[url=https://lspd.gta.world]www.LSPDonline.org[/url]
+[url=https://lspd.gta.world/viewforum.php?f=2188]www.joinLSPD.com[/url][/b][/i][/center][/font][/divbox3]`;
     showOutput(template);
 }
 
