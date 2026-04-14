@@ -84,10 +84,10 @@
         <div style="font-size: 11px; color: #777; font-style: italic; width: 100px;">Auto-saves to browser</div>
     </div>
 
-    <div id="ballistics" class="form-section active">
-        <h2>Ballistics Analysis Report</h2>
+    <div id="prelim" class="form-section active">
+        <h2>Preliminary Response Format</h2>
         <div class="row">
-            <div class="form-group"><label>Req. #</label><input type="text" id="br_reqNum" placeholder="0026"></div>
+            <div class="form-group"><label>Applicant Full Name</label><input type="text" id="pl_reqNum" placeholder="Johnny Doepe"></div>
             <div class="form-group"><label>Date (DD/MM)</label><input type="text" id="br_date" placeholder="01/10"></div>
         </div>
         <div class="row">
@@ -170,27 +170,6 @@
 
 <script>
 
-const drugData = {
-    "Crack Cocaine": { "formal_name": "Cocaine Base (Crack Cocaine)", "description": "The rock-like material tested positive with the Scott reagent and GC-MS confirmed [b]cocaine base[/b] (crack cocaine).", "tests": ["Scott", "GC-MS"], "descriptor_template": "Seized rock-like substance ({weight} grams, off-white rocks)" },
-    "Cocaine": { "formal_name": "Benzoylecgonine Methyl Ester (Cocaine)", "description": "Scott reagent turned blue, consistent with tropane alkaloids. GC-MS analysis confirmed [b]benzoylecgonine methyl ester[/b] (cocaine), an alkaloid derived from the coca plant.", "tests": ["Scott", "GC-MS"], "descriptor_template": "Seized white powder ({weight} grams)" },
-    "Heroin": { "formal_name": "Diamorphine (Heroin)", "description": "Marquis reagent produced a purple-brown reaction and Mecke reagent produced green coloration, both indicative of opiate alkaloids. GC-MS analysis confirmed the presence of [b]diamorphine[/b] (heroin), a semi-synthetic opioid derived from morphine.", "tests": ["Marquis", "Mecke", "GC-MS"], "descriptor_template": "Seized powdered substance ({weight} grams, brown powder)" },
-    "Methamphetamine": { "formal_name": "(S)-Methamphetamine Hydrochloride (Methamphetamine)", "description": "The crystalline substance produced an orange-brown Marquis reaction and blue Simons test, indicating a secondary amine. GC-MS confirmed the presence of [b]b-methamphetamine hydrochloride[/b] (methamphetamine).", "tests": ["Marquis", "Simon’s", "GC-MS"], "descriptor_template": "Seized crystalline material ({weight} grams, clear crystalline shards)" },
-    "Cannabis": { "formal_name": "Tetrahydrocannabinol (Cannabis)", "description": "Microscopic examination revealed glandular trichomes and cystolithic hairs consistent with cannabis plant material. Duquenois Levine test produced a purple color upon chloroform extraction. GC-MS confirmed the presence of [b]tetrahydrocannabinol (THC)[/b], the primary psychoactive compound in cannabis.", "tests": ["Microscopy", "Duquenois-Levine", "GC-MS"], "descriptor_template": "Seized organic material ({weight} grams, green leafy substance)" },
-    "Xanax": { "formal_name": "Alprazolam (Xanax)", "description": "GC-MS and FTIR confirmed the presence of [b]alprazolam[/b] (Xanax), a benzodiazepine.", "tests": ["FTIR", "GC-MS"], "descriptor_template": "Seized tablets ({weight} total, pharmaceutical grade)" },
-    "Vicodin": { "formal_name": "Hydrocodone Bitartrate (Vicodin)", "description": "FTIR and GC-MS confirmed the presence of [b]hydrocodone bitartrate[/b] (Vicodin), a semi-synthetic opioid.", "tests": ["FTIR", "GC-MS"], "descriptor_template": "Seized tablets ({weight} total, white tablets)" },
-    "Valium": { "formal_name": "Diazepam (Valium)", "description": "FTIR and GC-MS confirmed the presence of [b]diazepam[/b] (Valium), a benzodiazepine.", "tests": ["FTIR", "GC-MS"], "descriptor_template": "Seized tablets ({weight} total, blue pharmaceutical tablets)" },
-    "Morphine": { "formal_name": "Morphine Sulfate (Morphine)", "description": "Mecke reagent produced a green color shift. GC-MS confirmed [b]morphine sulfate[/b], a naturally occurring opiate analgesic.", "tests": ["Mecke", "GC-MS"], "descriptor_template": "Seized powdered substance ({weight} grams, off-white powder)" },
-    "PCP": { "formal_name": "Phencyclidine (PCP)", "description": "Mandelin reagent yielded a yellow-green reaction. GC-MS confirmed [b]phencyclidine[/b] (PCP), a dissociative hallucinogen.", "tests": ["Mandelin", "GC-MS"], "descriptor_template": "Seized crystalline substance ({weight} grams, pale yellow powder)" },
-    "Adderall": { "formal_name": "Mixed Amphetamine Salts (Adderall)", "description": "Marquis reagent produced an orange color indicative of amphetamines. GC-MS confirmed [b]mixed amphetamine salts[/b] consistent with Adderall.", "tests": ["Marquis", "GC-MS"], "descriptor_template": "Seized tablets ({weight} total, orange tablets)" },
-    "Mescaline": { "formal_name": "3,4,5-Trimethoxyphenethylamine (Mescaline)", "description": "Marquis reagent yielded a yellow-orange reaction. GC-MS confirmed [b]mescaline[/b], a naturally occurring psychedelic alkaloid.", "tests": ["Marquis", "GC-MS"], "descriptor_template": "Seized dried plant material ({weight} grams, cactus-derived)" },
-    "Bath Salts": { "formal_name": "Synthetic Cathinones (Bath Salts)", "description": "The tan powder produced a bright yellow with Liebermann reagent. GC-MS analysis detected synthetic cathinones, consistent with [b]3,4-methylenedioxypyrovalerone (MDPV)[/b] or similar compounds.", "tests": ["Liebermann", "GC-MS"], "descriptor_template": "Seized tan granular substance ({weight} grams)" },
-    "Oxycodone": { "formal_name": "Oxycodone Hydrochloride (Oxy)", "description": "FTIR and GC-MS confirmed the presence of [b]oxycodone hydrochloride[/b], a semi-synthetic opioid used for pain management.", "tests": ["FTIR", "GC-MS"], "descriptor_template": "Seized tablets ({weight} total, round white tablets)" },
-    "Ketamine": { "formal_name": "Ketamine Hydrochloride (Ketamine)", "description": "Mandelin reagent turned orange. GC-MS confirmed [b]ketamine hydrochloride[/b], a dissociative anesthetic.", "tests": ["Mandelin", "GC-MS"], "descriptor_template": "Seized crystalline substance ({weight} grams, colorless powder)" },
-    "Psilocybin Mushrooms": { "formal_name": "Psilocybin (Psilocybin Mushrooms)", "description": "Microscopic analysis confirmed the presence of psilocybin-containing fungal spores. GC-MS confirmed [b]psilocybin[/b], a naturally occurring hallucinogen derived from species such as Psilocybe cubensis.", "tests": ["Microscopy", "GC-MS"], "descriptor_template": "Seized fungal material ({weight} grams, dried mushrooms)" },
-    "MDMA": { "formal_name": "3,4-Methylenedioxymethamphetamine (MDMA)", "description": "Marquis reagent produced a dark purple reaction. GC-MS confirmed [b]3,4-methylenedioxymethamphetamine[/b] (MDMA), a substituted amphetamine commonly known as ecstasy.", "tests": ["Marquis", "GC-MS"], "descriptor_template": "Seized tablets ({weight} total, multicolored pressed pills)" },
-    "Cannabis Edibles": { "formal_name": "Tetrahydrocannabinol (THC, Cannabis Edibles)", "description": "Duquenois Levine test produced a purple coloration on extracted sample. GC-MS confirmed [b]tetrahydrocannabinol (THC)[/b] within the edible substrate.", "tests": ["Duquenois-Levine", "GC-MS"], "descriptor_template": "Seized edible items ({weight} total, cannabis-infused food products)" },
-    "Codeine": { "formal_name": "Codeine Phosphate (Codeine)", "description": "Mecke reagent produced a green coloration. GC-MS confirmed [b]codeine phosphate[/b], a mild opiate used for analgesia and cough suppression.", "tests": ["Mecke", "GC-MS"], "descriptor_template": "Seized bottled liquid ({weight} mL, cough syrup)" }
-};
 
 // PERSISTENCE LOGIC: Save name and badge to browser storage
 function saveStaff() {
