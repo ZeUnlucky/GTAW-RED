@@ -136,13 +136,13 @@
     <div class="staff-info">
         <h3>PERMANENT STAFF DETAILS:</h3>
         <div class="form-group" style="margin:0; flex:1;">
-            <input type="text" id="global_rank" placeholder="Rank (e.g. Recruitment Officer)" oninput="saveStaff()">
+            <input type="text" id="global_rank" placeholder="Rank (e.g. Police Officer II)" oninput="saveStaff()">
         </div>
         <div class="form-group" style="margin:0; flex:2;">
             <input type="text" id="global_name" placeholder="Full Name (e.g. Ruby Marks)" oninput="saveStaff()">
         </div>
         <div class="form-group" style="margin:0; flex:1;">
-            <input type="text" id="global_badge" placeholder="Badge # (e.g. N173508)" oninput="saveStaff()">
+            <input type="text" id="global_divrank" placeholder="Divisional Rank (e.g. Recruitment Officer)" oninput="saveStaff()">
         </div>
          
         <div style="font-size: 11px; color: #777; font-style: italic; width: 100px;">Auto-saves to browser</div>
@@ -829,18 +829,16 @@
 
 <script>
 
-
-// PERSISTENCE LOGIC: Save name and badge to browser storage
 function saveStaff() {
     localStorage.setItem('lspd_rank', document.getElementById('global_rank').value);
     localStorage.setItem('lspd_name', document.getElementById('global_name').value);
-    localStorage.setItem('lspd_badge', document.getElementById('global_badge').value);
+    localStorage.setItem('lspd_divrank', document.getElementById('global_divrank').value);
 }
 
 function loadStaff() {
     if(localStorage.getItem('lspd_rank')) document.getElementById('global_rank').value = localStorage.getItem('lspd_rank');
     if(localStorage.getItem('lspd_name')) document.getElementById('global_name').value = localStorage.getItem('lspd_name');
-    if(localStorage.getItem('lspd_badge')) document.getElementById('global_badge').value = localStorage.getItem('lspd_badge');
+    if(localStorage.getItem('lspd_divrank')) document.getElementById('global_divrank').value = localStorage.getItem('lspd_divrank');
 }
 
 // TAB LOGIC
@@ -903,8 +901,8 @@ function toggleMatch(prefix, id) {
 function getAnalyst() {
     const rank = document.getElementById('global_rank').value || "Recruitment Officer";
     const name = document.getElementById('global_name').value || "YOU FORGOT TO SET YOUR NAME!";
-    const badge = document.getElementById('global_badge').value || "BADGE # WITHOUT #";
-    return `${name} #${badge}, ${rank}`;
+    const divRank = document.getElementById('global_divrank').value || "Police Officer II";
+    return `${name}, #${rank}\n ${divRank}`;
 }
 
 function getInitials()
