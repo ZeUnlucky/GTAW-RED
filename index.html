@@ -62,7 +62,8 @@
 </div>
 
 <div class="nav-tabs">
-    <button class="tab-btn active" onclick="openTab(event, 'prelim')">PRELIMINARY</button>
+    <button class="tab-btn active" onclick="openTab(event, 'prelim-r')">PRELIMINARY - RECEIVED</button>
+    <button class="tab-btn" onclick="openTab(event, 'prelim-ar')">PRELIMINARY - ACTION REQUIRED</button>
     <button class="tab-btn" onclick="openTab(event, 'latent-prints')">OTHER</button>
     
 </div>
@@ -84,26 +85,29 @@
         <div style="font-size: 11px; color: #777; font-style: italic; width: 100px;">Auto-saves to browser</div>
     </div>
 
-    <div id="prelim" class="form-section active">
+    <div id="prelim-ar" class="form-section active">
         <h2>Preliminary Response Format</h2>
         <div class="row">
             <div class="form-group"><label>Applicant Full Name</label><input type="text" id="pl_fullName" placeholder="Johnny Doepe"></div>
             <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="pl_date" placeholder="December 28th, 2026"></div>
         </div>
-        <div class="row">
-            <div class="form-group"><label>Requested By</label><input type="text" id="br_reqBy" placeholder="Marks, N173508"></div>
-            <div class="form-group"><label>Email</label><input type="text" id="br_email" placeholder="N173508@lspd.online"></div>
+        
+        <div class="section-title">Fields</div>
+        <div id="pl_items_container">
+            <div>
+                <h2>Section 1</h2>
+                <label>
+                    <input type="checkbox" id="cb-1-1">
+                    1.1
+                </label>
+
+                <input type="text" id="field-1-1" placeholder="Last Name">
+            </div>
         </div>
-        <div class="section-title">Evidence Configuration</div>
-        <div class="form-group">
-            <label>Number of Items:</label>
-            <input type="number" id="br_count" value="1" min="1" onchange="genFieldsBR()">
-        </div>
-        <div id="br_items_container"></div>
-        <button class="build-btn" onclick="buildBR()">Generate Ballistics BBCode</button>
+        <button class="build-btn" onclick="buildBR()">Generate Preliminary Response BBCode</button>
     </div>
 
-    <div id="latent-prints" class="form-section">
+    <div id="prelim-r" class="form-section">
         <h2>Latent Print Report</h2>
         <div class="row">
             <div class="form-group"><label>Report #</label><input type="text" id="lp_reqNum" placeholder="107"></div>
@@ -196,23 +200,7 @@ function openTab(evt, tabName) {
     document.getElementById("output-area").style.display = "none";
 }
 
-// FIELD GENERATORS
-function genFieldsBR() {
-    const container = document.getElementById('br_items_container');
-    const count = document.getElementById('br_count').value;
-    container.innerHTML = '';
-    for (let i = 1; i <= count; i++) {
-        container.innerHTML += `
-            <div class="item-card">
-                <h4>Ballistics Item #${i}</h4>
-                <div class="form-group"><label>Description</label><input type="text" id="br_desc_${i}" placeholder="One (1) 9mm Shell Casing"></div>
-                <div class="row">
-                    <div class="form-group"><label>Status</label><select id="br_status_${i}" onchange="toggleMatch('br', ${i})"><option value="no">No Match</option><option value="yes">Identified/Match Found</option></select></div>
-                    <div class="form-group" id="br_match_box_${i}" style="display:none;"><label>Match To:</label><input type="text" id="br_match_${i}" placeholder="Tariq Shareef / Serial: 12345"></div>
-                </div>
-            </div>`;
-    }
-}
+
 
 function genFieldsLP() {
     const container = document.getElementById('lp_items_container');
