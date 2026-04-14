@@ -831,13 +831,13 @@
 
 function saveStaff() {
     localStorage.setItem('lspd_rank', document.getElementById('global_rank').value);
-    localStorage.setItem('lspd_name', document.getElementById('global_name').value);
+    localStorage.setItem('lspdred_name', document.getElementById('globalred_name').value);
     localStorage.setItem('lspd_divrank', document.getElementById('global_divrank').value);
 }
 
 function loadStaff() {
     if(localStorage.getItem('lspd_rank')) document.getElementById('global_rank').value = localStorage.getItem('lspd_rank');
-    if(localStorage.getItem('lspd_name')) document.getElementById('global_name').value = localStorage.getItem('lspd_name');
+    if(localStorage.getItem('lspdred_name')) document.getElementById('globalred_name').value = localStorage.getItem('lspdred_name');
     if(localStorage.getItem('lspd_divrank')) document.getElementById('global_divrank').value = localStorage.getItem('lspd_divrank');
 }
 
@@ -902,7 +902,7 @@ function getAnalyst() {
     const rank = document.getElementById('global_rank').value || "Recruitment Officer";
     const name = document.getElementById('global_name').value || "YOU FORGOT TO SET YOUR NAME!";
     const divRank = document.getElementById('global_divrank').value || "Police Officer II";
-    return `${name}, #${rank}\n ${divRank}`;
+    return `${name}, ${rank}\n ${divRank}`;
 }
 
 function getInitials()
