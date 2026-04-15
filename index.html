@@ -21,7 +21,7 @@
         .tab-btn:hover { color: var(--lspd-blue); background: #f8f9fa; }
         .tab-btn.active { color: var(--lspd-blue); border-bottom: 3px solid var(--lspd-blue); }
 
-        .container { max-width: 1000px; margin: 20px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .container { max-width: 1250px; margin: 20px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
         
         /* Staff Info Section */
         .staff-info { background: #eef2f7; border: 1px solid #d1d9e6; padding: 15px; border-radius: 8px; margin-bottom: 25px; display: flex; gap: 20px; align-items: center; }
@@ -135,13 +135,16 @@
 
     <div class="staff-info">
         <h3>PERMANENT STAFF DETAILS:</h3>
-        <div class="form-group" style="margin:0; flex:1;">
-            <input type="text" id="global_rank" placeholder="Rank (e.g. Police Officer II)" oninput="saveStaff()">
+          <div class="form-group" style="margin:0; flex:1;">
+            <input type="text" id="global_signature" placeholder="Signature (Link or empty)" oninput="saveStaff()">
         </div>
-        <div class="form-group" style="margin:0; flex:2;">
+         <div class="form-group" style="margin:0; flex:2;">
             <input type="text" id="globalred_name" placeholder="Full Name (e.g. Ruby Marks)" oninput="saveStaff()">
         </div>
-        <div class="form-group" style="margin:0; flex:1;">
+        <div class="form-group" style="margin:0; flex:3;">
+            <input type="text" id="global_rank" placeholder="Rank (e.g. Police Officer II)" oninput="saveStaff()">
+        </div>
+        <div class="form-group" style="margin:0; flex:4;">
             <input type="text" id="global_divrank" placeholder="Divisional Rank (e.g. Recruitment Officer)" oninput="saveStaff()">
         </div>
          
@@ -830,12 +833,14 @@
 <script>
 
 function saveStaff() {
+    localStorage.setItem('lspd_signature', document.getElementById('global_signature').value);
     localStorage.setItem('lspd_rank', document.getElementById('global_rank').value);
     localStorage.setItem('lspdred_name', document.getElementById('globalred_name').value);
     localStorage.setItem('lspd_divrank', document.getElementById('global_divrank').value);
 }
 
 function loadStaff() {
+    if(localStorage.getItem('lspd_signature')) document.getElementById('global_signature').value = localStorage.getItem('lspd_signature');
     if(localStorage.getItem('lspd_rank')) document.getElementById('global_rank').value = localStorage.getItem('lspd_rank');
     if(localStorage.getItem('lspdred_name')) document.getElementById('globalred_name').value = localStorage.getItem('lspdred_name');
     if(localStorage.getItem('lspd_divrank')) document.getElementById('global_divrank').value = localStorage.getItem('lspd_divrank');
@@ -869,10 +874,14 @@ function toggleMatch(prefix, id) {
 
 // BUILDERS
 function getAnalyst() {
+    var signature = document.getElementById('global_signature').value || "";
+    if (signature != "")
+        signature = `[img]${signature}[/img]`;
+
     const rank = document.getElementById('global_rank').value || "Recruitment Officer";
-    const name = document.getElementById('globalred_name').value || "YOU FORGOT TO SET YOUR NAME!";
     const divRank = document.getElementById('global_divrank').value || "Police Officer II";
-    return `${name}, ${rank}\n${divRank}`;
+    const name = document.getElementById('globalred_name').value || "YOU FORGOT TO SET YOUR NAME!";
+    return `${signature}\n${name}, ${divRank}\n${rank}`;
 }
 
 function getInitials()
