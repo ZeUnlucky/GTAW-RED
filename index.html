@@ -53,6 +53,17 @@
         .output-box { margin-top: 30px; background: #2d3436; color: #fab1a0; padding: 20px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 13px; width: 100%; height: 250px; box-sizing: border-box; resize: none; }
         .copy-btn { background-color: var(--success-green); margin-top: 10px; }
 
+        .day-btn{
+            padding:7px 14px;
+            border:0.5px solid rgba(0,0,0,0.10);
+            border-radius: 8px;
+            background:none;
+            background-color: #777;
+            color: #aab3c2;
+            font-size:12px;
+            cursor:pointer;
+            transition:.15s;
+        }
 
         .checkbox-container {
             display: flex;
@@ -114,6 +125,23 @@
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
         }
+
+        textarea{
+            font-size:13px;
+            padding:8px 10px;
+            border:0.5px solid var(--lspd-navy);
+            border-radius:var(--lspd-navy);
+            outline:none;
+            font-family:inherit;
+            width:100%;
+        }
+
+        textarea:focus{
+            border-color:#60a5fa;
+            box-shadow:0 0 0 2px rgba(96,165,250,.18);
+        }
+
+        textarea{resize:vertical;min-height:60px}
     </style>
 </head>
 <body>
@@ -155,7 +183,8 @@
         <h2>Preliminary Response Format</h2>
         <div class="row">
             <div class="form-group"><label>Applicant Full Name</label><input type="text" id="pl_fullName" placeholder="Johnny Doepe"></div>
-            <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="pl_date" placeholder="December 28th, 2026"></div>
+            <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="pl_date" placeholder="December 28th, 2026"><button type="button" class="day-btn" onclick="setToday('pl_date')">Today</button></div>
+            
         </div>
         
         <div class="section-title">Fields</div>
@@ -165,7 +194,7 @@
                 <h3>Name</h3>
                 <div class="row">
                     <label class="checkbox-container">
-                        <input type="checkbox" data-target="f1-1">
+                        <input type="checkbox" data-target="f1-1" >
                         <span class="checkmark"></span>
                         1-1 Last                 
                     </label>
@@ -568,7 +597,7 @@
                     <span class="checkmark"></span>
                     8-1 Essay        
                 </label>
-                <input type="text" id="f8-1" placeholder="REASON" disabled>
+                <textarea type="text" id="f8-1" placeholder="REASON" disabled></textarea>
 
                 </div>
             </div>
@@ -603,18 +632,18 @@
                 <div class="row">
 
                 <label class="checkbox-container">
-                    <input type="checkbox" data-target="f10-1-1"> 
+                    <input type="checkbox" data-target="f10-1-1" > 
                     <span class="checkmark"></span>
                     10-1-1 Nick           
                 </label>
-                <input type="text" id="f10-1-1" placeholder="REASON" disabled>
+                <input type="text" id="f10-1-1" placeholder="REASON" data-ooc="true" disabled>
 
                 <label class="checkbox-container">
-                    <input type="checkbox" data-target="f10-1-2"> 
+                    <input type="checkbox" data-target="f10-1-2" > 
                     <span class="checkmark"></span>
                     10-1-2 Discord           
                 </label>
-                <input type="text" id="f10-1-2" placeholder="REASON" disabled>
+                <input type="text" id="f10-1-2" placeholder="REASON" data-ooc="true" disabled>
 
 
                 </div>
@@ -622,66 +651,66 @@
                 <div class="row">
                     
 <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-2"> 
+    <input type="checkbox" data-target="f10-2" > 
     <span class="checkmark"></span>
     10-2 Gender           
 </label>
-<input type="text" id="f10-2" placeholder="REASON" disabled>
+<input type="text" id="f10-2" placeholder="REASON" data-ooc="true" disabled>
                 </div>
 
                 <div class="row">
                     
 <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-3"> 
+    <input type="checkbox" data-target="f10-3" > 
     <span class="checkmark"></span>
     10-3 Age           
 </label>
-<input type="text" id="f10-3" placeholder="REASON" disabled>
+<input type="text" id="f10-3" placeholder="REASON" data-ooc="true" disabled>
 
                 </div>
                 <h3>Time</h3>
                 <div class="row">
                     <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-4"> 
+    <input type="checkbox" data-target="f10-4" > 
     <span class="checkmark"></span>
     10-4 GTAW Time           
 </label>
-<input type="text" id="f10-4" placeholder="REASON" disabled>
+<input type="text" id="f10-4" placeholder="REASON" data-ooc="true" disabled>
 
 <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-5"> 
+    <input type="checkbox" data-target="f10-5" > 
     <span class="checkmark"></span>
     10-5 Other Time           
 </label>
 
-<input type="text" id="f10-5" placeholder="REASON" disabled>
+<input type="text" id="f10-5" placeholder="REASON" data-ooc="true" disabled>
 
 
                 </div>
                 <h3>Other Characters</h3>
                 <div class="row">
                     <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-6"> 
+    <input type="checkbox" data-target="f10-6" > 
     <span class="checkmark"></span>
     10-6 Characters           
 </label>
-<input type="text" id="f10-6" placeholder="REASON" disabled>
+<input type="text" id="f10-6" placeholder="REASON" data-ooc="true" disabled>
 
 <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-7"> 
+    <input type="checkbox" data-target="f10-7" > 
     <span class="checkmark"></span>
     10-7 Past Factions           
 </label>
-<input type="text" id="f10-7" placeholder="REASON" disabled>
+<input type="text" id="f10-7" placeholder="REASON" data-ooc="true" disabled>
                 </div>
 <h3>Previous LSPD Info</h3>
                 <div class="row">
                     <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-8"> 
+    <input type="checkbox" data-target="f10-8" > 
     <span class="checkmark"></span>
     10-8 LSPD Leave Date           
 </label>
-<input type="text" id="f10-8" placeholder="REASON" disabled>
+<input type="text" id="f10-8" placeholder="REASON" data-ooc="true" disabled>
 
 
 <label class="checkbox-container">
@@ -689,7 +718,7 @@
     <span class="checkmark"></span>
     10-9 LSPD Reinstatement           
 </label>
-<input type="text" id="f10-9" placeholder="REASON" disabled>
+<input type="text" id="f10-9" placeholder="REASON" data-ooc="true" disabled>
                 </div>
                 <div class="row">
 <label class="checkbox-container">
@@ -697,54 +726,54 @@
     <span class="checkmark"></span>
     10-10 Previous Academy           
 </label>
-<input type="text" id="f10-10" placeholder="REASON" disabled>
+<input type="text" id="f10-10" placeholder="REASON" data-ooc="true" disabled>
                 </div>
                   <div class="row">
                     
 <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-11-1"> 
+    <input type="checkbox" data-target="f10-11-1" > 
     <span class="checkmark"></span>
     10-11-1 Other factions           
 </label>
-<input type="text" id="f10-11-1" placeholder="REASON" disabled>
+<input type="text" id="f10-11-1" placeholder="REASON" data-ooc="true" disabled>
 
 <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-11-2"> 
+    <input type="checkbox" data-target="f10-11-2" > 
     <span class="checkmark"></span>
     10-11-2 Other factions List           
 </label>
-<input type="text" id="f10-11-2" placeholder="REASON" disabled>
+<input type="text" id="f10-11-2" placeholder="REASON" data-ooc="true" disabled>
 <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-11-3"> 
+    <input type="checkbox" data-target="f10-11-3" > 
     <span class="checkmark"></span>
     10-11-3 2FA           
 </label>
-<input type="text" id="f10-11-3" placeholder="REASON" disabled>
+<input type="text" id="f10-11-3" placeholder="REASON" data-ooc="true" disabled>
                 </div>
                 <h3>GTAW Info</h3>
                   <div class="row">
                     <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-12"> 
+    <input type="checkbox" data-target="f10-12" > 
     <span class="checkmark"></span>
     10-12 GTAW Name           
 </label>
-<input type="text" id="f10-12" placeholder="REASON" disabled>
+<input type="text" id="f10-12" placeholder="REASON" data-ooc="true" disabled>
 
                 </div>
                 <h3>Links</h3>
                 <div class="row">
                     <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-13"> 
+    <input type="checkbox" data-target="f10-13" > 
     <span class="checkmark"></span>
     10-13 GTAW Link           
 </label>
-<input type="text" id="f10-13" placeholder="REASON" disabled>
+<input type="text" id="f10-13" placeholder="REASON" data-ooc="true" disabled>
 <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-14"> 
+    <input type="checkbox" data-target="f10-14" > 
     <span class="checkmark"></span>
     10-14 GTAW Record           
 </label>
-<input type="text" id="f10-14" placeholder="REASON" disabled>
+<input type="text" id="f10-14" placeholder="REASON" data-ooc="true" disabled>
 
                 </div>
                 <div class="row">
@@ -754,14 +783,14 @@
     <span class="checkmark"></span>
     10-15 GTAW Stats           
 </label>
-<input type="text" id="f10-15" placeholder="REASON" disabled>
+<input type="text" id="f10-15" placeholder="REASON" data-ooc="true" disabled>
 
 <label class="checkbox-container">
     <input type="checkbox" data-target="f10-16"> 
     <span class="checkmark"></span>
     10-16 Mic           
 </label>
-<input type="text" id="f10-16" placeholder="REASON" disabled>
+<input type="text" id="f10-16" placeholder="REASON" data-ooc="true" disabled>
 
                 </div>
                 <h3>Last bit of info!</h3>
@@ -771,7 +800,7 @@
     <span class="checkmark"></span>
     10-17 Backstory           
 </label>
-<input type="text" id="f10-17" placeholder="REASON" disabled>
+<textarea multiline id="f10-17" placeholder="REASON" disabled></textarea>
                 </div>
                 <div class="row">
 <label class="checkbox-container">
@@ -779,14 +808,14 @@
     <span class="checkmark"></span>
     10-18 Fingerprints           
 </label>
-<input type="text" id="f10-18" placeholder="REASON" disabled>
+<input type="text" id="f10-18" placeholder="REASON" data-ooc="true" disabled>
 
 <label class="checkbox-container">
-    <input type="checkbox" data-target="f10-19"> 
+    <input type="checkbox" data-target="f10-19" > 
     <span class="checkmark"></span>
     10-19 Drug Test           
 </label>
-<input type="text" id="f10-19" placeholder="REASON" disabled>
+<input type="text" id="f10-19" placeholder="REASON" data-ooc="true" disabled>
                 </div>
             </div>
 
@@ -798,7 +827,7 @@
         <h2>Preliminary Response Format</h2>
         <div class="row">
            <div class="form-group"><label>Applicant Full Name</label><input type="text" id="plr_fullName" placeholder="Johnny Doepe"></div>
-            <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="plr_date" placeholder="December 28th, 2026"></div>
+            <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="plr_date" placeholder="December 28th, 2026"><button type="button" class="day-btn" onclick="setToday('plr_date')">Today</button></div>
         </div>
         <button class="build-btn" onclick="buildR()">Generate Preliminary Response BBCode</button>
     </div>
@@ -807,7 +836,7 @@
         <h2>Preliminary Acceptance Format</h2>
         <div class="row">
            <div class="form-group"><label>Applicant Full Name</label><input type="text" id="plac_fullName" placeholder="Johnny Doepe"></div>
-            <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="plac_date" placeholder="December 28th, 2026"></div>
+            <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="plac_date" placeholder="December 28th, 2026"><button type="button" class="day-btn" onclick="setToday('plac_date')">Today</button></div>
         </div>
         <button class="build-btn" onclick="buildAC()">Generate Preliminary Response BBCode</button>
     </div>
@@ -817,7 +846,7 @@
         <h2>Preliminary Approval Format</h2>
         <div class="row">
            <div class="form-group"><label>Applicant Full Name</label><input type="text" id="plap_fullName" placeholder="Johnny Doepe"></div>
-            <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="plap_date" placeholder="December 28th, 2026"></div>
+            <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="plap_date" placeholder="December 28th, 2026"><button type="button" class="day-btn" onclick="setToday('plap_date')">Today</button></div>
         </div>
         <button class="build-btn" onclick="buildAP()">Generate Preliminary Response BBCode</button>
     </div>
@@ -831,6 +860,31 @@
 </div>
 
 <script>
+
+function setToday(id){
+  const d = new Date();
+
+  const months = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+  ];
+
+  const day = d.getDate();
+  const year = d.getFullYear();
+  const month = months[d.getMonth()];
+
+  function getOrdinal(n){
+    if (n > 3 && n < 21) return "th";
+    switch (n % 10){
+      case 1: return "st";
+      case 2: return "nd";
+      case 3: return "rd";
+      default: return "th";
+    }
+  }
+
+  document.getElementById(id).value = `${month} ${day}${getOrdinal(day)}, ${year}`;
+}
 
 function saveStaff() {
     localStorage.setItem('lspd_signature', document.getElementById('global_signature').value);
@@ -907,23 +961,21 @@ function buildAR() {
     ).map(cb => cb.dataset.target);
 
     uncheckedTargets.forEach(tag => {
-        ev += `[*] ${dataSetToString(tag)}: ${document.getElementById(tag).value}\n`
+        ev += `[*] ${document.getElementById(tag).dataset.ooc ? "((" : ""}${dataSetToString(tag)}: ${document.getElementById(tag).value}${document.getElementById(tag).dataset.ooc ? "))" : ""}\n`
     });
-
-   const template = `[divbox3=white,0,transparent,5,14,14][nletterhead][/nletterhead][font=Arial]
+    var template ="";
+    if (ev === "")
+    {
+       template = `[divbox3=white,0,transparent,5,14,14][nletterhead][/nletterhead][font=Arial]
 ${date}
 
 ${fullName}
 
-[b]POLICE OFFICER PRELIMINARY BACKGROUND APPLICATION — ACTION REQUIRED[/b]
+[b]POLICE OFFICER PRELIMINARY BACKGROUND APPLICATION — ACCEPTED[/b]
 
-Thank you for applying for the position of Police Officer with the City of Los Santos. We have carefully evaluated your background in light of the City of Los Santos' Background Standards for public safety positions. Based upon a review of the information you provided, your preliminary background application status has been changed to action required and requires your immediate attention to address the following findings:
-[list=square]
-${ev}
-[/list]
-At this time, you may elect to either withdraw your application or action the items listed above within the next [b]forty-eight (48) hours[/b]. Should you have any question, concern or require any information in regards to this decision, please do not hesitate to contact the Officer-in-Charge, Recruitment Section.
+Thank you for applying for the position of Police Officer with the City of Los Santos. We have carefully evaluated your background in accordance with the City of Los Santos' Background Standards for public safety positions. Based upon an initial review of the information you have provided, your preliminary background application has been deemed up to standard and will now undergo a secondary review by a Recruitment Supervisor. You should expect a written response detailing the determination of this review within the next twenty-four (24) hours.
 
-[ooc]Please submit a reply to this thread once you have actioned the aforementioned concerns.[/ooc]
+Please be patient whilst this review is completed. During this time, please refrain from contacting any Department employee to receive an update, or otherwise attempting to speed up the process, as this will reflect negatively on you. Should you no longer seek employment within the Department, please notify the Recruitment and Employment Division as soon as possible by replying to this letter.
 
 Respectfully,
 
@@ -937,6 +989,38 @@ Recruitment and Employment Division
 [center][i][b]AN EQUAL EMPLOYMENT OPPORTUNITY EMPLOYER
 [url=https://lspd.gta.world]www.LSPDonline.org[/url]
 [url=https://lspd.gta.world/viewforum.php?f=2188]www.joinLSPD.com[/url][/b][/i][/center][/font][/divbox3]`;
+    }
+    else
+    {
+   
+    template = `[divbox3=white,0,transparent,5,14,14][nletterhead][/nletterhead][font=Arial]
+    ${date}
+
+    ${fullName}
+
+    [b]POLICE OFFICER PRELIMINARY BACKGROUND APPLICATION — ACTION REQUIRED[/b]
+
+    Thank you for applying for the position of Police Officer with the City of Los Santos. We have carefully evaluated your background in light of the City of Los Santos' Background Standards for public safety positions. Based upon a review of the information you provided, your preliminary background application status has been changed to action required and requires your immediate attention to address the following findings:
+    [list=square]
+    ${ev}
+    [/list]
+    At this time, you may elect to either withdraw your application or action the items listed above within the next [b]forty-eight (48) hours[/b]. Should you have any question, concern or require any information in regards to this decision, please do not hesitate to contact the Officer-in-Charge, Recruitment Section.
+
+    [ooc]Please submit a reply to this thread once you have actioned the aforementioned concerns.[/ooc]
+
+    Respectfully,
+
+    DWAYNE BURKE
+    Chief of Police
+
+    ${getAnalyst()}
+    Recruitment and Employment Division
+
+    [br][/br]
+    [center][i][b]AN EQUAL EMPLOYMENT OPPORTUNITY EMPLOYER
+    [url=https://lspd.gta.world]www.LSPDonline.org[/url]
+    [url=https://lspd.gta.world/viewforum.php?f=2188]www.joinLSPD.com[/url][/b][/i][/center][/font][/divbox3]`;
+    }
     showOutput(template);
 }
 
@@ -1050,11 +1134,7 @@ function copyCode() {
 
 // Initial Generation
 window.onload = function() { 
-    loadStaff(); // Load saved info
-    genFieldsBR(); 
-    genFieldsLP(); 
-    genFieldsDNA(); 
-    genFieldsNC();
+    loadStaff(); // Load saved info   
 };
 </script>
 
