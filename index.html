@@ -1338,7 +1338,7 @@ function buildAR() {
     ).map(cb => cb.dataset.target);
 
     uncheckedTargets.forEach(tag => {
-        ev += `[*] ${document.getElementById(tag).dataset.ooc ? "((" : ""}${dataSetToString(tag)}: ${document.getElementById(tag).value}${document.getElementById(tag).dataset.ooc ? "))" : ""}\n`
+        ev += `[*] ${document.getElementById(tag).dataset.ooc ? "((" : ""}[b]${dataSetToString(tag)}:[/b] ${document.getElementById(tag).value}${document.getElementById(tag).dataset.ooc ? "))" : ""}\n`
     });
     var template ="";
     if (ev === "")
