@@ -142,6 +142,196 @@
         }
 
         textarea{resize:vertical;min-height:60px}
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            margin-left: 8px;
+        }
+
+        .tooltip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background: var(--lspd-blue);
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .tooltip:hover .tooltip-icon {
+            background: var(--lspd-navy);
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 280px;
+            background-color: var(--lspd-navy);
+            color: white;
+            text-align: left;
+            border-radius: 6px;
+            padding: 12px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -140px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 13px;
+            line-height: 1.4;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--lspd-navy) transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .instruction-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-left: 4px solid #ffc107;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            color: #856404;
+            font-size: 0.9em;
+        }
+
+        .instruction-box strong {
+            color: #664d03;
+        }
+
+        /* Right Panel Handbook */
+        .main-wrapper {
+            display: flex;
+            gap: 20px;
+            max-width: 1600px;
+            margin: 20px auto;
+        }
+
+        .container {
+            flex: 1;
+            margin: 0;
+        }
+
+        .handbook-panel {
+            width: 320px;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            position: sticky;
+            top: 20px;
+        }
+
+        .handbook-panel h3 {
+            color: var(--lspd-navy);
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+
+        .handbook-instruction {
+            color: #666;
+            font-size: 0.85em;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .handbook-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 8px;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .handbook-item:last-child {
+            border-bottom: none;
+        }
+
+        .handbook-item:hover {
+            background: #f8f9fa;
+        }
+
+        .handbook-item input[type="checkbox"] {
+            display: none;
+        }
+
+        .handbook-checkmark {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--lspd-blue);
+            border-radius: 3px;
+            background: white;
+            position: relative;
+            transition: 0.2s;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .handbook-item:hover .handbook-checkmark {
+            border-color: var(--lspd-navy);
+        }
+
+        .handbook-item input:checked ~ .handbook-checkmark {
+            background: var(--lspd-blue);
+            border-color: var(--lspd-blue);
+        }
+
+        .handbook-checkmark::after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 4px;
+            top: 0px;
+            width: 4px;
+            height: 9px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .handbook-item input:checked ~ .handbook-checkmark::after {
+            display: block;
+        }
+
+        .handbook-item .handbook-label {
+            margin: 0;
+            font-size: 0.85em;
+            color: #444;
+            line-height: 1.5;
+            cursor: pointer;
+            font-weight: normal;
+            flex: 1;
+        }
+
+        .handbook-item input:checked ~ .handbook-label {
+            color: #999;
+            text-decoration: line-through;
+        }
     </style>
 </head>
 <body>
@@ -159,10 +349,17 @@
     
 </div>
 
+<div class="main-wrapper">
+
 <div class="container">
 
     <div class="staff-info">
-        <h3>PERMANENT STAFF DETAILS:</h3>
+        <h3>PERMANENT STAFF DETAILS:
+            <span class="tooltip">
+                <span class="tooltip-icon">?</span>
+                <span class="tooltip-text">Enter your details here once and they'll be saved automatically. Your information will be used in all generated letters.</span>
+            </span>
+        </h3>
           <div class="form-group" style="margin:0; flex:1;">
             <input type="text" id="global_signature" placeholder="Signature (Link or empty)" oninput="saveStaff()">
         </div>
@@ -181,6 +378,11 @@
 
     <div id="prelim-ar" class="form-section active">
         <h2>Preliminary Response Format</h2>
+        
+        <div class="instruction-box">
+            <strong>Instructions:</strong> Select each area that needs fixing by the applicant, and give the reason next to it.
+        </div>
+        
         <div class="row">
             <div class="form-group"><label>Applicant Full Name</label><input type="text" id="pl_fullName" placeholder="Johnny Doepe"></div>
             <div class="form-group"><label>Date (Month Day, Year)</label><input type="text" id="pl_date" placeholder="December 28th, 2026"><button type="button" class="day-btn" onclick="setToday('pl_date')">Today</button></div>
@@ -859,6 +1061,181 @@
 
 </div>
 
+<div class="handbook-panel">
+    <h3>Application Handbook</h3>
+    <p class="handbook-instruction">This is your handbook, it's used to guide you through the application.</p>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb1">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicants are required to have a valid address</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb2">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicants are required to be a United States citizen</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb3">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicants are required to have provided a valid contact number</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb4">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicant is at least 21 years of age</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb5">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicant must meet the required body-fat percentage</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb6">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicants have provided a valid passport photo, clearly showing the front of the face and shoulders with no obstruction</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb7">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicants are required to be a graduate of a U.S. high school, G.E.D, or equivalent from a U.S. institution</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb8">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicants are required to be of acceptable mental health</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb9">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicants are required to possess a valid driver's license within the State of San Andreas</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb10">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicants with exceptionally poor/recent traffic infractions are liable to be denied</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb11">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicants are required to have no criminal history, with the exception of traffic infractions</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb12">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicants have agreed to all conditions as provided to them</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb13">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicants have provided a valid signature date</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb14">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">Applicants have fingerprints and a mugshot placed on record (if there is none, add it using the information on the application)</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb15">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((The forum name must match the applicant name))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb16">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants are required to have any character that has at least 30 hours of in-game time))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb17">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants that have been in the Department previously are required to post a Reinstatement Request prior to applying))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb18">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants must not currently be in the process of applying for another Law Enforcement Officer role in any other Department))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb19">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants must have provided a valid link to their GTA: World forum account))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb20">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants must disclose an unedited screenshot of their admin record for all of their current and past accounts))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb21">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants must have no bans or admin jails posted against them in the last 3 months on any character. Applicants can be disqualified by Lead Recruitment Officers for extensive admin records outside of this 3 month window))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb22">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants must disclose an unedited screenshot of their in-game statistics for all of their current and past accounts))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb23">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants must possess a working microphone))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb24">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants must have a reasonable character background and development prior to application, with acceptable grammar))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb25">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants must not be in possession of assets that are unrealistic to attain))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb26">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants must have provided a fingerprint sample and a drug test sample))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb27">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants stats screenshot must show they have zero additional drug tolerances. Characters showing a high drug tolerance should be put on hold and forwarded to a Lead Recruitment Officer or a Member of the Recruitment Section Command Team))</span>
+    </label>
+    
+    <label class="handbook-item">
+        <input type="checkbox" id="hb28">
+        <span class="handbook-checkmark"></span>
+        <span class="handbook-label">((Applicants must have signed the waiver at the bottom of their application))</span>
+    </label>
+</div>
+
+</div>
+
 <script>
 
 function setToday(id){
@@ -912,7 +1289,7 @@ function openTab(evt, tabName) {
     document.getElementById("output-area").style.display = "none";
 }
 
-document.querySelectorAll("input[type=checkbox]").forEach(cb => {
+document.querySelectorAll("input[type=checkbox][data-target]").forEach(cb => {
     cb.addEventListener("change", () => {
       const targetId = cb.dataset.target;
       const field = document.getElementById(targetId);
@@ -957,7 +1334,7 @@ function buildAR() {
     let ev = "";
 
     const uncheckedTargets = Array.from(
-    document.querySelectorAll('input[type="checkbox"]:checked')
+    document.querySelectorAll('input[type="checkbox"][data-target]:checked')
     ).map(cb => cb.dataset.target);
 
     uncheckedTargets.forEach(tag => {
