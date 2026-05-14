@@ -346,6 +346,7 @@
     <button class="tab-btn active" onclick="openTab(event, 'prelim-ar')">PRELIMINARY - ACTION REQUIRED</button>
     <button class="tab-btn" onclick="openTab(event, 'prelim-ac')">PRELIMINARY - ACCEPTED</button>
     <button class="tab-btn" onclick="openTab(event, 'prelim-ap')">PRELIMINARY - APPROVED</button>
+    <button class="tab-btn" onclick="openTab(event, 'prelim-d')">PRELIMINARY - DENIED</button>
     
 </div>
 
@@ -1053,11 +1054,37 @@
         <button class="build-btn" onclick="buildAP()">Generate Preliminary Response BBCode</button>
     </div>
 
+    <div id="prelim-d" class="form-section">
+        <h2>Preliminary Denial Format</h2>
+
+        <div class="row">
+            <div class="form-group">
+                <label>Applicant Full Name</label>
+                <input type="text" id="pld_fullName" placeholder="Johnny Doepe">
+            </div>
+
+            <div class="form-group">
+                <label>Date (Month Day, Year)</label>
+                <input type="text" id="pld_date" placeholder="December 28th, 2026">
+                <button type="button" class="day-btn" onclick="setToday('pld_date')">Today</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Reason for Denial</label>
+            <textarea id="pld_reason" placeholder="Enter denial reason here..." style="min-height:220px;"></textarea>
+        </div>
+
+        <button class="build-btn" onclick="buildD()">Generate Preliminary Response BBCode</button>
+    </div>
+
     <div id="output-area" style="display:none; margin-top:40px; border-top: 2px solid #eee;">
         <div class="section-title">Generated BBCode Output</div>
         <textarea id="universal_output" class="output-box" readonly></textarea>
         <button class="build-btn copy-btn" onclick="copyCode()">Copy to Clipboard</button>
     </div>
+
+    
 
 </div>
 
@@ -1492,6 +1519,46 @@ Recruitment and Employment Division
 [center][i][b]AN EQUAL EMPLOYMENT OPPORTUNITY EMPLOYER
 [url=https://lspd.gta.world]www.LSPDonline.org[/url]
 [url=https://lspd.gta.world/viewforum.php?f=2188]www.joinLSPD.com[/url][/b][/i][/center][/font][/divbox3]`;
+    showOutput(template);
+}
+
+function buildD() {
+    const fullName = document.getElementById('pld_fullName').value;
+    const date = document.getElementById('pld_date').value;
+    const reason = document.getElementById('pld_reason').value;
+
+    const template = `[divbox3=white,0,transparent,5,14,14][nletterhead][/nletterhead][font=Arial]
+${date}
+
+${fullName}
+
+[b]REVIEW OF PRELIMINARY BACKGROUND APPLICATION - DISQUALIFIED[/b]
+
+Thank you for applying for the position of Police Officer with the City of Los Santos. We have carefully reviewed your preliminary background application in light of the City of Los Santos' Background Standards for public safety positions. Based upon such review, we have determined that you are not among the most qualified candidates and, as such, you are being disqualified; our investigation identified concerns related to the following:
+[list=square]
+${reason}
+[/list]
+At this time, you may elect to either withdraw your application or to file a disqualification appeal which includes:
+[list=square]
+[*] a discussion of any mitigating circumstances that you wish to have considered;
+[*] any relevant and/or supporting documentation; and
+[*] a brief discussion of the reasons you believe you meet all of the background standards.
+[/list]For further information and instructions regarding disqualification appeals, please consult the [url=https://lspd.gta.world/viewtopic.php?f=2189&t=46241]Queries and Appeal/Complaint Procedure[/url] document.
+
+Should you opt for withdrawing, we encourage you to retain your interest in public service and volunteer activities. We have no doubt that you will make a valuable contribution to the community and at the same time find satisfaction and fulfillment in whatever activities you decide to involve yourself in.
+
+Respectfully,
+
+DWAYNE BURKE
+Chief of Police
+
+${getAnalyst()}
+
+[br][/br]
+[center][i][b]AN EQUAL EMPLOYMENT OPPORTUNITY EMPLOYER
+[url=https://lspd.gta.world]www.LSPDonline.org[/url]
+[url=https://lspd.gta.world/viewforum.php?f=2188]www.joinLSPD.com[/url][/b][/i][/center][/font][/divbox3]`;
+
     showOutput(template);
 }
 
